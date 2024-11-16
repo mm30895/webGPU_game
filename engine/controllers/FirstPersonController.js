@@ -1,4 +1,4 @@
-import { quat, vec3, mat4 } from 'glm';
+import { quat, vec3 } from 'glm';
 
 import { Transform } from '../core/Transform.js';
 import { Light } from '../../scene/Light.js';
@@ -13,6 +13,7 @@ export class FirstPersonController {
         maxSpeed = 10,
         decay = 0.99999,
         pointerSensitivity = 0.002,
+        lightSpeedFactor = 0.1,  // Added to control light speed
     } = {}) {
         this.node = node;
         this.domElement = domElement;
@@ -27,6 +28,7 @@ export class FirstPersonController {
         this.maxSpeed = maxSpeed;
         this.decay = decay;
         this.pointerSensitivity = pointerSensitivity;
+        this.lightSpeedFactor = lightSpeedFactor;  // Store light speed factor
 
         this.initHandlers();
     }
@@ -128,12 +130,18 @@ export class FirstPersonController {
                 }
                 
                 const childLight = child.getComponentOfType(Light);
-                //console.log(childLight)
                 if (childLight) {
                     const light = childLight;
-                
-                    // Update the light's position based on the camera's position and rotation
-                    light.updatePosition(cameraPos, transform.rotation);
+                    
+                    const rotatedPos = vec3.create();
+                    vec3.transformQuat(rotatedPos, light.initialRelativePos, rotation);
+                    const adjustedPos = vec3.create();
+                    vec3.scale(adjustedPos, rotatedPos, this.lightSpeedFactor);
+
+                    vec3.add(light.initialRelativePos, cameraPos, adjustedPos);
+
+                    vec3.set(light.direction, -adjustedPos[0], -adjustedPos[1], -adjustedPos[2]);
+                    vec3.normalize(light.direction, light.direction);
                 }
             }
             

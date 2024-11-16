@@ -126,18 +126,14 @@ export class FirstPersonController {
 
                     vec3.add(childTransform.translation, cameraPos, rotatedPos);
                 }
-                if (childTransform && child instanceof Light) {
-                    const light = child;
-                    const rotation = transform.rotation;
-            
-                    // Calculate the new position of the light based on the camera's position and rotation
-                    const rotatedPos = vec3.create();
-                    vec3.transformQuat(rotatedPos, light.initialRelativePos, rotation);
-                    vec3.add(childTransform.translation, cameraPos, rotatedPos);
-            
-                    // Optionally update the light's direction based on the camera's orientation
-                    vec3.set(light.direction, -rotatedPos[0], -rotatedPos[1], -rotatedPos[2]);
-                    vec3.normalize(light.direction, light.direction);
+                
+                const childLight = child.getComponentOfType(Light);
+                //console.log(childLight)
+                if (childLight) {
+                    const light = childLight;
+                
+                    // Update the light's position based on the camera's position and rotation
+                    light.updatePosition(cameraPos, transform.rotation);
                 }
             }
             

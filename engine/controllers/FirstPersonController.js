@@ -1,6 +1,7 @@
 import { quat, vec3, mat4 } from 'glm';
 
 import { Transform } from '../core/Transform.js';
+import { Light } from '../../scene/Light.js';
 
 export class FirstPersonController {
 
@@ -49,6 +50,16 @@ export class FirstPersonController {
                 doc.removeEventListener('pointermove', this.pointermoveHandler);
             }
         });
+        const cameraPos = this.node.getComponentOfType(Transform).translation;
+        for (const child of this.node.children) {
+            const childTransform = child.getComponentOfType(Transform);
+            if (childTransform) {
+                // Calculate and store the initial relative position from the camera
+                childTransform.initialRelativePos = vec3.create();
+                vec3.sub(childTransform.initialRelativePos, childTransform.translation, cameraPos);
+            }
+        }
+        
     }
 
     update(t, dt) {
@@ -93,16 +104,43 @@ export class FirstPersonController {
         }
 
         const transform = this.node.getComponentOfType(Transform);
+        // Update the camera's translation based on velocity.
         if (transform) {
-            // Update translation based on velocity.
-            vec3.scaleAndAdd(transform.translation,
-                transform.translation, this.velocity, dt);
-
-            // Update rotation based on the Euler angles.
+            
+            vec3.scaleAndAdd(transform.translation, transform.translation, this.velocity, dt);
             const rotation = quat.create();
+            // Create a rotation quaternion based on pitch and yaw.
             quat.rotateY(rotation, rotation, this.yaw);
             quat.rotateX(rotation, rotation, this.pitch);
+            
             transform.rotation = rotation;
+            const cameraPos = transform.translation;
+
+            for (const child of this.node.children) {
+                const childTransform = child.getComponentOfType(Transform);
+
+                if (childTransform && childTransform.initialRelativePos) {
+                    childTransform.rotation = rotation;
+                    const rotatedPos = vec3.create();
+                    vec3.transformQuat(rotatedPos, childTransform.initialRelativePos, rotation);
+
+                    vec3.add(childTransform.translation, cameraPos, rotatedPos);
+                }
+                if (childTransform && child instanceof Light) {
+                    const light = child;
+                    const rotation = transform.rotation;
+            
+                    // Calculate the new position of the light based on the camera's position and rotation
+                    const rotatedPos = vec3.create();
+                    vec3.transformQuat(rotatedPos, light.initialRelativePos, rotation);
+                    vec3.add(childTransform.translation, cameraPos, rotatedPos);
+            
+                    // Optionally update the light's direction based on the camera's orientation
+                    vec3.set(light.direction, -rotatedPos[0], -rotatedPos[1], -rotatedPos[2]);
+                    vec3.normalize(light.direction, light.direction);
+                }
+            }
+            
         }
     }
 

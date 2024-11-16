@@ -1,20 +1,22 @@
 import { mat4 } from 'glm';
 
-import * as WebGPU from '../WebGPU.js';
+import * as WebGPU from 'engine/WebGPU.js';
 
-import { Camera, Model } from '../core.js';
+import { Camera, Model } from 'engine/core.js';
 
 import {
     getLocalModelMatrix,
     getGlobalViewMatrix,
     getProjectionMatrix,
     getModels,
-} from '../core/SceneUtils.js';
+} from 'engine/core/SceneUtils.js';
 
-import { BaseRenderer } from './BaseRenderer.js';
+import { BaseRenderer } from 'engine/renderers/BaseRenderer.js';
+
+import {Light} from "./Light.js"
 
 const vertexBufferLayout = {
-    arrayStride: 20,
+    arrayStride: 32,
     attributes: [
         {
             name: 'position',
@@ -28,10 +30,16 @@ const vertexBufferLayout = {
             offset: 12,
             format: 'float32x2',
         },
+        {
+            name: 'normal',
+            shaderLocation: 2,
+            offset: 20,
+            format: 'float32x3'
+        }
     ],
 };
 
-export class UnlitRenderer extends BaseRenderer {
+export class Renderer extends BaseRenderer {
 
     constructor(canvas) {
         super(canvas);
@@ -40,7 +48,7 @@ export class UnlitRenderer extends BaseRenderer {
     async initialize() {
         await super.initialize();
 
-        const code = await fetch(new URL('UnlitRenderer.wgsl', import.meta.url))
+        const code = await fetch(new URL('./shaders/shader.wgsl', import.meta.url))
             .then(response => response.text());
         const module = this.device.createShaderModule({ code });
 
@@ -155,6 +163,27 @@ export class UnlitRenderer extends BaseRenderer {
         this.gpuObjects.set(material, gpuObjects);
         return gpuObjects;
     }
+    prepareLight(light){
+        if (this.gpuObjects.has(light)) {
+            return this.gpuObjects.get(light);
+        }
+
+        const lightUniformBuffer = this.device.createBuffer({
+            size: 48, // floati
+            usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
+        });
+
+        const lightBindGroup = this.device.createBindGroup({
+            layout: this.pipeline.getBindGroupLayout(3),
+            entries: [
+                { binding: 0, resource: { buffer: lightUniformBuffer } },
+            ],
+        });
+
+        const gpuObjects = { lightUniformBuffer, lightBindGroup };
+        this.gpuObjects.set(light, gpuObjects);
+        return gpuObjects;
+    }
 
 
     render(scene, camera) {
@@ -189,9 +218,27 @@ export class UnlitRenderer extends BaseRenderer {
         this.device.queue.writeBuffer(cameraUniformBuffer, 64, projectionMatrix);
         this.renderPass.setBindGroup(0, cameraBindGroup);
 
+         // luci
+        const light = scene.find(node=> node.getComponentOfType(Light));
+        const lightComponent = light.getComponentOfType(Light);
+        const {lightUniformBuffer, lightBindGroup } = this.prepareLight(lightComponent);
+        const LightUniformsValues = new ArrayBuffer(48);
+        const LightUniformsViews = {
+            color: new Float32Array(LightUniformsValues, 0, 3),
+            direction: new Float32Array(LightUniformsValues, 16, 3), 
+            initialRelativePos: new Float32Array(LightUniformsValues, 32, 3), 
+        }
+        LightUniformsViews.color.set(lightComponent.color);
+        LightUniformsViews.direction.set(lightComponent.direction);
+        LightUniformsViews.initialRelativePos.set(lightComponent.initialRelativePos);
+        this.device.queue.writeBuffer(lightUniformBuffer,0, LightUniformsValues)
+        this.renderPass.setBindGroup(3, lightBindGroup);
+
         const cameraChild = camera.children[0];
+        const cameraLight = camera.children[1];
         this.renderNode(scene);
         this.renderNode(cameraChild);
+        //this.renderLight(cameraLight);
 
         this.renderPass.end();
         this.device.queue.submit([encoder.finish()]);
@@ -233,5 +280,22 @@ export class UnlitRenderer extends BaseRenderer {
 
         this.renderPass.drawIndexed(primitive.mesh.indices.length);
     }
+
+    renderLight(light) {
+        const lightComponent = light.getComponentOfType(Light);
+        const {lightUniformBuffer, lightBindGroup } = this.prepareLight(lightComponent);
+        const LightUniformsValues = new ArrayBuffer(48);
+        const LightUniformsViews = {
+            color: new Float32Array(LightUniformsValues, 0, 3),
+            direction: new Float32Array(LightUniformsValues, 16, 3), 
+            initialRelativePos: new Float32Array(LightUniformsValues, 32, 3), 
+        }
+        LightUniformsViews.color.set(lightComponent.color);
+        LightUniformsViews.direction.set(lightComponent.direction);
+        LightUniformsViews.initialRelativePos.set(lightComponent.initialRelativePos);
+        this.device.queue.writeBuffer(lightUniformBuffer,0, LightUniformsValues)
+        this.renderPass.setBindGroup(3, lightBindGroup);
+    }
+    
 
 }

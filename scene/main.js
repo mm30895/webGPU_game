@@ -16,6 +16,10 @@ import {
 import { Physics } from './Physics.js';
 import { cube } from '../objects/cube.js';
 import { minotaur } from '../objects/minotaur.js';
+import { chestClosed } from '../objects/chestClosed.js';
+import { chestOpened } from '../objects/cehstOpened.js';
+import { boringSword } from '../objects/boringSword.js';
+import { superSword } from '../objects/superSword.js';
 import { Light } from './Light.js';
 
 const canvas = document.getElementById("canvas")
@@ -25,18 +29,25 @@ await renderer.initialize();
 
 
 const loader = new GLTFLoader();
-await loader.load('assets/scene2-5.gltf');
+await loader.load('assets/scene2-6.gltf');
 //const scene = loader.loadScene(loader.defaultScene);
 const scene = loader.loadScene('Scene');
 const camera = loader.loadNode('Camera');
 
 
+camera.addChild(boringSword);
+
+const light = new Node();
+camera.addChild(light);
+light.addComponent(new Light());
+light.addComponent(new Transform());
+console.log(light)
 
 camera.addComponent(new FirstPersonController(camera, canvas));
 camera.isDynamic = true;
 camera.aabb = {
-    min: [-2, -2, -2],
-    max: [2, 2, 2],
+    min: [-0.5, -2, -0.5],
+    max: [0.5, 0.7, 0.5],
 };
 
 loader.loadNode('Plane.001').isStatic = true;
@@ -50,15 +61,18 @@ const sword = loader.loadNode('Cube');
 
 scene.addChild(cube);
 scene.addChild(minotaur);
+scene.addChild(chestOpened);
+scene.addChild(superSword);
+//scene.addChild(boringSword);
+
+console.log(boringSword);
 minotaur.isStatic = true;
 //console.log(scene)
+//camera.addChild(boringSword);
 
-const light = new Node();
-camera.addChild(light);
-light.addComponent(new Light());
-light.addComponent(new Transform());
-console.log(light)
 
+
+console.log(camera)
 const physics = new Physics(scene);
 scene.traverse(node => {
     const model = node.getComponentOfType(Model);

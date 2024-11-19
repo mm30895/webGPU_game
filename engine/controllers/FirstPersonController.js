@@ -13,7 +13,7 @@ export class FirstPersonController {
         maxSpeed = 10,
         decay = 0.99999,
         pointerSensitivity = 0.002,
-        lightSpeedFactor = 0.1,  // Added to control light speed
+        lightSpeedFactor = 0.01,  // Added to control light speed
     } = {}) {
         this.node = node;
         this.domElement = domElement;
@@ -140,7 +140,7 @@ export class FirstPersonController {
 
                     vec3.add(light.initialRelativePos, cameraPos, adjustedPos);
 
-                    vec3.set(light.direction, -adjustedPos[0], -adjustedPos[1], -adjustedPos[2]);
+                    vec3.set(light.direction, adjustedPos[0], adjustedPos[1], adjustedPos[2]);
                     vec3.normalize(light.direction, light.direction);
                 }
             }

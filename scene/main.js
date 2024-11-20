@@ -14,13 +14,13 @@ import {
 } from 'engine/core/MeshUtils.js';
 
 import { Physics } from './Physics.js';
-import { cube } from '../objects/cube.js';
 import { minotaur } from '../objects/minotaur.js';
 import { chestClosed } from '../objects/chestClosed.js';
 import { chestOpened } from '../objects/cehstOpened.js';
-import { boringSword } from '../objects/boringSword.js';
-import { superSword } from '../objects/superSword.js';
+import { BoringSword } from '../objects/boringSword.js';
+import { SuperSword } from '../objects/superSword.js';
 import { Light } from './Light.js';
+import { Player } from './player.js';
 
 const canvas = document.getElementById("canvas")
 const renderer = new Renderer(canvas);
@@ -34,16 +34,30 @@ await loader.load('assets/scene2-6.gltf');
 const scene = loader.loadScene('Scene');
 const camera = loader.loadNode('Camera');
 
+//loading the objects
+const boringSword = new BoringSword('assets/boring_sword.gltf', 'Cube.004');
+await boringSword.load();
+boringSword.getNode().visible = true;
+//console.log(boringSword.getNode())
+camera.addChild(boringSword.getNode());
 
-camera.addChild(boringSword);
+const superSword = new SuperSword('assets/cool_sword.gltf', 'Cube.006');
+await superSword.load();
+superSword.getNode().visible = false;
+//console.log(superSword.getNode())
+camera.addChild(superSword.getNode())
 
 const light = new Node();
-camera.addChild(light);
 light.addComponent(new Light());
 light.addComponent(new Transform());
-console.log(light)
+camera.addChild(light);
 
-camera.addComponent(new FirstPersonController(camera, canvas));
+const light2 = new Node();
+light2.addComponent(new Light());
+scene.addChild(light2)
+console.log(camera)
+
+camera.addComponent(new Player(camera, canvas, boringSword.getNode(), superSword.getNode(), light));
 camera.isDynamic = true;
 camera.aabb = {
     min: [-0.5, -2, -0.5],
@@ -53,19 +67,16 @@ camera.aabb = {
 loader.loadNode('Plane.001').isStatic = true;
 loader.loadNode('Plane.002').isStatic = true;
 loader.loadNode('Plane').isStatic = true;
-const sword = loader.loadNode('Cube');
 
 
 // add the obj
 
-
-scene.addChild(cube);
 scene.addChild(minotaur);
 scene.addChild(chestOpened);
-scene.addChild(superSword);
+//scene.addChild(superSword);
 //scene.addChild(boringSword);
 
-console.log(boringSword);
+//console.log(boringSword);
 minotaur.isStatic = true;
 //console.log(scene)
 //camera.addChild(boringSword);

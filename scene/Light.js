@@ -3,15 +3,15 @@ import {vec3, quat} from 'glm'
 export class Light {
 
     constructor({
-        color = [ 255, 255, 255], // white
+        color = [ 255*1.0, 255*0.8, 255*0.5], // white
         direction = [0, 1, 0],
-        initialRelativePos = [12.2,
+        position = [12.2,
             7.299824600219727,
             -2],     
     } = {}){
         this.color = color;
         this.direction= direction;
-        this.initialRelativePos = initialRelativePos;
+        this.position = position;
 
         this.prevCameraPos = [ 12.828324317932129,
             7.669824600219727,

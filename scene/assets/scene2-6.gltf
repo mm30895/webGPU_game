@@ -233,14 +233,14 @@
             "uri" : "sword-cube.png"
         },
         {
-            "mimeType" : "image/png",
-            "name" : "ground",
-            "uri" : "ground.png"
+            "mimeType" : "image/jpeg",
+            "name" : "skrinja",
+            "uri" : "skrinja.jpg"
         },
         {
-            "mimeType" : "image/png",
-            "name" : "wall",
-            "uri" : "wall.png"
+            "mimeType" : "image/jpeg",
+            "name" : "skrinja",
+            "uri" : "skrinja.jpg"
         }
     ],
     "accessors" : [

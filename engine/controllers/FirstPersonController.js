@@ -1,4 +1,4 @@
-import { quat, vec3 } from 'glm';
+import { quat, vec3, vec4 } from 'glm';
 
 import { Transform } from '../core/Transform.js';
 import { Light } from '../../scene/Light.js';
@@ -29,6 +29,7 @@ export class FirstPersonController {
         this.decay = decay;
         this.pointerSensitivity = pointerSensitivity;
         this.lightSpeedFactor = lightSpeedFactor;  // Store light speed factor
+        this.staticRotation = new vec4(0.1, 0.8, 0, 0);
 
         this.initHandlers();
     }
@@ -85,6 +86,10 @@ export class FirstPersonController {
         if (this.keys['KeyA']) {
             vec3.sub(acc, acc, right);
         }
+        if (this.keys['KeyT']) {
+            this.staticRotation = new vec4(0.5, 0.8, 0, 0);
+            console.log(this.staticRotation)
+        }
 
         // Update velocity based on acceleration.
         vec3.scaleAndAdd(this.velocity, this.velocity, acc, dt * this.acceleration);
@@ -122,7 +127,10 @@ export class FirstPersonController {
                 const childTransform = child.getComponentOfType(Transform);
 
                 if (childTransform && childTransform.initialRelativePos) {
-                    childTransform.rotation = rotation;
+                    //console.log(rotation)
+                    const staticRotation = new vec4(0.1, 0.8, 0, 0);
+                    vec4.copy(childTransform.rotation, staticRotation);
+                    //childTransform.rotation = rotation ;
                     const rotatedPos = vec3.create();
                     vec3.transformQuat(rotatedPos, childTransform.initialRelativePos, rotation);
 
@@ -131,17 +139,12 @@ export class FirstPersonController {
                 
                 const childLight = child.getComponentOfType(Light);
                 if (childLight) {
-                    const light = childLight;
-                    
-                    const rotatedPos = vec3.create();
-                    vec3.transformQuat(rotatedPos, light.initialRelativePos, rotation);
-                    const adjustedPos = vec3.create();
-                    vec3.scale(adjustedPos, rotatedPos, this.lightSpeedFactor);
+                    const lightDirection = vec3.create();
+                    vec3.transformQuat(lightDirection, [0, 0, -1], rotation); // Transform forward vector by camera rotation
+                    childLight.position = lightDirection;
+                    vec3.copy(childLight.position, cameraPos);
+                    //console.log(childLight)
 
-                    vec3.add(light.initialRelativePos, cameraPos, adjustedPos);
-
-                    vec3.set(light.direction, adjustedPos[0], adjustedPos[1], adjustedPos[2]);
-                    vec3.normalize(light.direction, light.direction);
                 }
             }
             

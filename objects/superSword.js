@@ -1,27 +1,39 @@
 import { GLTFLoader } from 'engine/loaders/GLTFLoader.js';
 
-const gltfLoader = new GLTFLoader();
-await gltfLoader.load(new URL('assets/cool_sword.gltf', import.meta.url));
+export class SuperSword {
+    constructor(url, nodeName) {
+        this.url = url;
+        this.nodeName = nodeName;
+        this.gltfLoader = new GLTFLoader();
+        this.node = null;
+    }
 
-const superSword = gltfLoader.loadNode('Cube.006');
+    async load() {
+        // Load the GLTF file
+        await this.gltfLoader.load(new URL(this.url, import.meta.url));
 
-superSword.components[0].translation = [
-    13.4,
-    7.299824600219727,
-    -2
-];
-superSword.components[0].scale = [
-    0.3,
-    0.3,
-    0.1
-];
-superSword.components[0].rotation = [
-    0,
-    0,
-    0,
-    0
-];
+        // Load the specific node
+        this.node = this.gltfLoader.loadNode(this.nodeName);
 
+        // Set default properties
+        this.node.components[0].translation = [13.4, 7.299824600219727, -2];
+        this.node.components[0].scale = [0.09, 0.04, 0.03];
+        this.node.components[0].rotation = [0, 0, 0, 0];
+    }
 
-export { superSword };
+    setTranslation(x, y, z) {
+        this.node.components[0].translation = [x, y, z];
+    }
 
+    setScale(x, y, z) {
+        this.node.components[0].scale = [x, y, z];
+    }
+
+    setRotation(x, y, z, w) {
+        this.node.components[0].rotation = [x, y, z, w];
+    }
+
+    getNode() {
+        return this.node;
+    }
+}

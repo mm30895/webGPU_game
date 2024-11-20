@@ -73,17 +73,17 @@ fn fragment(input: FragmentInput) -> FragmentOutput {
     let lightDir = normalize(light.position - input.worldPos);
     let lambert = max(dot(N, lightDir), 0.0);
 
-    let intensityFactor = 0.2;  // Increase this factor to make the light brighter
-    let dc = lambert * light.color * intensityFactor;
+    let intensityFactor = 0.1;  //  light brighter/dimmer
+    let pointLight = lambert * light.color * intensityFactor;
 
 
     let baseColor = textureSample(baseTexture, baseSampler, input.texcoords) * material.baseFactor;
-    let ambientLight = vec3f(0, 0, 0);
+    let ambientLight = vec3f(0.005, 0.001, 0);
 
-    let finalPointColor = baseColor.rgb * (dc / pow(length(light.position - input.worldPos), 2));
+    let finalPointColor = baseColor.rgb * (pointLight / pow(length(light.position - input.worldPos), 2));
     let finalColor = finalPointColor + ambientLight;
 
-    // Calculate diffuse lighting based on the updated light direction
+
     //let diffuseLight = basecolor * vec4(lambert * light.color, 1);
     //output.color = diffuseLight + ambientLight;
     output.color =vec4(finalColor,1);

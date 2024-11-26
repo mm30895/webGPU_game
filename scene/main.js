@@ -21,38 +21,16 @@ import { BoringSword } from '../objects/boringSword.js';
 import { SuperSword } from '../objects/superSword.js';
 import { Light } from './Light.js';
 import { Player } from './player.js';
+import { Audio } from './Audio.js';
 
 const canvas = document.getElementById("canvas")
 const renderer = new Renderer(canvas);
 await renderer.initialize();
 
-const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-// const urlParameters = new URLSearchParams(window.location.search);
-// const play = urlParameters.get('play');
-
-async function loadMusic(url) {
-    const response = await fetch(url);
-    const arrayBuffer = await response.arrayBuffer();
-    return await audioContext.decodeAudioData(arrayBuffer);
-}
-
-const audioBuffer = await loadMusic('audio/microwave.mp3');
-let isPlaying = false;
-
-function playMusic() {
-    if (!isPlaying) {
-        const music = audioContext.createBufferSource();
-        music.buffer = audioBuffer;
-        music.loop = true;
-        music.connect(audioContext.destination);
-        music.start(0);
-        isPlaying = true;
-    }
-}
-
+const music = new Audio();
 document.addEventListener('click', () => {
-    playMusic();
-})
+    music.playMusic('./audio/the 14th sacrifice.mp3');
+});
 
 const loader = new GLTFLoader();
 await loader.load('assets/scene2-6.gltf');

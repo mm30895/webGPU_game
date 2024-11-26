@@ -23,5 +23,7 @@ export class ChestTrigger {
     }
     onTrigger() {
         this.chest.openChest();
+        const effect = new Audio();
+        effect.playEffect('./audio/mixkit-mechanical-crate-pick-up-3154.mp3');
     }
 }

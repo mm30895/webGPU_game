@@ -21,7 +21,7 @@ import { SuperSword } from '../objects/superSword.js';
 import { Light } from './Light.js';
 import { Player } from './player.js';
 import { Chest } from '../objects/chest.js';
-import { Minotaur } from '../objects/minotaur.js';
+// import { Minotaur } from '../objects/minotaur.js';
 import { Audio } from './Audio.js';
 
 const canvas = document.getElementById("canvas")

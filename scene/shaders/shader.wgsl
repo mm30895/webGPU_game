@@ -78,7 +78,7 @@ fn fragment(input: FragmentInput) -> FragmentOutput {
 
 
     let baseColor = textureSample(baseTexture, baseSampler, input.texcoords) * material.baseFactor;
-    let ambientLight = vec3f(0.005, 0.005, 0.005);
+    let ambientLight = vec3f(0.02, 0.02, 0.02);
 
     let finalPointColor = baseColor.rgb * (pointLight / pow(length(light.position - input.worldPos), 2));//popravi pow
     let ambientColor = baseColor.rgb * ambientLight;

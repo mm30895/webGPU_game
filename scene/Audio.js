@@ -30,5 +30,6 @@ export class Audio {
 		effect.buffer = await this.loadAudio(path);
 		effect.connect(this.audioContext.destination);
 		effect.start();
+		console.log(path);
 	}
 }

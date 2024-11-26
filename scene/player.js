@@ -41,6 +41,7 @@ export class Player {
         this.minotaurHitTimer = 50;
 
         this.pickup = false;
+        this.audio = new Audio();
 
         this.initHandlers();
         this.initChildTransforms();
@@ -143,11 +144,11 @@ export class Player {
         const right = [cos, 0, -sin];
 
         // audio instance for playing the sound of footsteps (plays during keypress) and lags awfully :(
-        /* const audio = new Audio();
+         //const audio = new Audio();
         const moving = this.keys['KeyW'] || this.keys['KeyA'] || this.keys['KeyS'] || this.keys['KeyD'];
-        if (moving && !audio.isPlaying) {
-            audio.playFootsteps('./audio/walking.mp3');
-        } */
+        if (moving && !this.audio.isPlaying) {
+            this.audio.playFootsteps('./audio/walking.mp3');
+        } 
 
         // Constant movement in the direction of keys pressed
         const acc = vec3.create();

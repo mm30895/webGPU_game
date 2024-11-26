@@ -1,10 +1,8 @@
 import { ResizeSystem } from 'engine/systems/ResizeSystem.js';
 import { UpdateSystem } from 'engine/systems/UpdateSystem.js';
-import { GUI } from 'dat';
 
 import { GLTFLoader } from 'engine/loaders/GLTFLoader.js';
 import { Renderer } from './renderer.js';
-import { FirstPersonController } from 'engine/controllers/FirstPersonController.js';
 
 import { Camera, Model, Node, Transform } from 'engine/core.js';
 
@@ -30,6 +28,7 @@ const canvas = document.getElementById("canvas")
 const renderer = new Renderer(canvas);
 await renderer.initialize();
 
+//ambient music
 const music = new Audio();
 document.addEventListener('click', () => {
     music.playMusic('./audio/the 14th sacrifice.mp3');
@@ -137,12 +136,6 @@ function render() {
 function resize({ displaySize: { width, height }}) {
     camera.getComponentOfType(Camera).aspect = width / height;
 }
-// const gui = new GUI();
-// const controller = camera.getComponentOfType(FirstPersonController);
-// gui.add(controller, 'pointerSensitivity', 0.0001, 0.01);
-// gui.add(controller, 'maxSpeed', 0, 10);
-// gui.add(controller, 'decay', 0, 1);
-// gui.add(controller, 'acceleration', 1, 100);
 
 
 new ResizeSystem({ canvas, resize }).start();

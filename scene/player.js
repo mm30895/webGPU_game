@@ -38,11 +38,15 @@ export class Player {
         this.rotationTimer = 0; 
         this.rotationDuration = 0.5; 
 
+        this.hp = 100;
+
         this.minotaurHitTimer = 50;
 
         this.pickup = false;
         this.audio = new Audio();
         this.effect = new Audio();
+
+        this.awsome = false;
 
         this.initHandlers();
         this.initChildTransforms();
@@ -113,15 +117,32 @@ export class Player {
             childTransform.rotation = rotation;
         }
     }
+    updateHPBar() {
+        const hpBar = document.getElementById('hp-bar');
+        if (hpBar) {
+            const hpPercentage = Math.max(1, this.hp); // give 1 last hp XD
+            hpBar.style.width = `${hpPercentage}%`;
+        }
+    }
 
     update(t, dt) {
+        //if dead
+        if (this.hp < 0) {
+            // Navigate to death screen
+            window.location.href = "deathScreen.html";
+            return; // Stop further updates
+        }
+        this.updateHPBar();
+
         if (this.keys['KeyP']) {
             this.awsomeSword.visible = true;
             this.sword.visible = false;
+            this.awsome = true;
         }
         if (this.keys['KeyO']) {
             this.awsomeSword.visible = false;
             this.sword.visible = true;
+            this.awsome = false;
         }
         if (this.keys['KeyE']) {
             this.pickup = true;

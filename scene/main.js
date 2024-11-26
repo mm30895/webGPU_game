@@ -70,7 +70,7 @@ camera.aabb = {
     min: [-1, -1, -1],
     max: [5, 10, 5],
 };
-for(var i = 1; i <= 9; i++) {
+for(var i = 2; i <= 9; i++) {
     loader.loadNode(`Cube.00${i}`).isStatic = true;
     loader.loadNode(`Cube.00${i}`).visible = true;
 }
@@ -109,7 +109,7 @@ scene.addChild(chest.currentNode);
 
 //console.log("trig", chestTrigger)
 
-console.log(camera)
+//console.log(camera)
 const physics = new Physics(scene);
 scene.traverse(node => {
     const model = node.getComponentOfType(Model);
@@ -129,7 +129,7 @@ function update(time, dt) {
         node.update?.(time, dt);
     });
 
-    
+    minotaur.update(time, dt);
     physics.update(time, dt);
 }
 

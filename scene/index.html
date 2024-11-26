@@ -14,11 +14,19 @@
     </script>
     <script type="module" src="main.js"></script>
     <link rel="stylesheet" href="../../../engine/style.css">
+    <link rel="stylesheet" href="uiStyles.css">
+    
 </head>
 <body>
     <div class="fullscreen no-touch pixelated">
         <canvas id="canvas" style="position: absolute; left: 0; top: 0; z-index: 0;"></canvas>
         <canvas id="canvasFront" style="position: absolute; left: 0; top: 0; z-index: 1; pointer-events: none;"></canvas>
+    </div>
+    <div id="hp-container">
+        <div id="hp-bar"></div>
+    </div>
+    <div id="hp-container-minotaur">
+        <div id="hp-bar-minotaur"></div>
     </div>
 </body>
 </html>

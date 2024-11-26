@@ -70,11 +70,14 @@ export class Chest {
             const effect = new Audio();
             effect.playEffect('./audio/chest effect.mp3');
             console.log("Chest has been opened!");
+            console.log(this.chestOpened);
             
             setTimeout(() => {
                 console.log("Timer triggered: Sword visibility updated.");
                 this.player.awsomeSword.visible = true;
                 this.player.sword.visible = false;
+                this.player.awsome = true;
+                this.chestOpened.removeChild(this.chestOpened.children[0]);
             }, 1000); // 1 second delay
             //scene.addChild(this.player.awsomeSword)
 

@@ -14,13 +14,13 @@ transform.scale = [1.4, 1.4, 1.4];
 minotaurNode.isStatic = true;
 minotaurNode.visible = true;
 
-minotaurTriggerNode.visible = true;
+minotaurTriggerNode.visible = false;
 minotaurTriggerNode.isTrigger = true;
 
 
 const transformTrigger = minotaurTriggerNode.components[0];
-transformTrigger.translation = [-10, 9, -20];
-transformTrigger.scale = [1.4 * 4.239274501800537, 1.4 * 5.867170810699463, 1.4 * 2.936772108078003];
+transformTrigger.translation = [-10, 10, -20];
+transformTrigger.scale = [1.4 * 4.239274501800537, 1.4 * 5.867170810699463, 5 * 2.936772108078003];
 
 
 export { minotaurNode, minotaurTriggerNode};

@@ -13,7 +13,7 @@ export class Audio {
 	
 	async playMusic(path) {
 		if (this.isPlaying) {
-			console.log("music already playing");
+			//console.log("music already playing");
 			return;
 		}
 

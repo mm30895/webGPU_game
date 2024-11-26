@@ -1,0 +1,37 @@
+#hp-container {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50%;
+    height: 20px;
+    background: rgba(255, 0, 0, 0.2);
+    border: 2px solid rgba(255, 0, 0, 0.8);
+    border-radius: 10px;
+    z-index: 2;
+}
+#hp-bar {
+    height: 100%;
+    background: rgba(255, 0, 0, 0.8);
+    width: 100%;
+    border-radius: 10px;
+}
+
+#hp-container-minotaur {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50%;
+    height: 20px;
+    background: rgba(255, 0, 0, 0.2);
+    border: 2px solid rgba(55, 0, 255, 0.8);
+    border-radius: 10px;
+    z-index: 2;
+}
+#hp-bar-minotaur {
+    height: 100%;
+    background: rgba(47, 0, 255, 0.8);
+    width: 100%;
+    border-radius: 10px;
+}

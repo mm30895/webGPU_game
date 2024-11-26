@@ -43,6 +43,11 @@ export class Minotaur {
            // console.log(this.hp)
         }
         this.player.minotaurHitTimer -= 0.1;
+        if(this.player.minotaurHitTimer == 0) {
+            this.player.minotaurHitTimer = 50;
+            this.player.hp -= 500;
+            console.log(this.player.hp);
+        }
         console.log(this.player.minotaurHitTimer )
     
     }

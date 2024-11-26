@@ -29,14 +29,14 @@ export class Player {
         this.pitch = pitch;
         this.yaw = yaw;
 
-        this.moveSpeed = moveSpeed; // Set the movement speed
+        this.moveSpeed = moveSpeed;
         this.pointerSensitivity = pointerSensitivity;
-        this.lightSpeedFactor = lightSpeedFactor; // Store light speed factor
+        this.lightSpeedFactor = lightSpeedFactor; 
         this.staticRotation = new vec4(0.1, 0.8, 0, 0);
         this.hit = false;
         this.hittimer = 1000;
-        this.rotationTimer = 0; // Timer to track rotation state duration
-        this.rotationDuration = 0.5; // Duration of 1 second for changed rotation
+        this.rotationTimer = 0; 
+        this.rotationDuration = 0.5; 
 
         this.minotaurHitTimer = 50;
 

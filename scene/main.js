@@ -12,7 +12,7 @@ import {
 } from 'engine/core/MeshUtils.js';
 
 import { Physics } from './Physics.js';
-import { minotaurNode} from '../objects/minotaur1.js';
+import { minotaurNode, minotaurTriggerNode} from '../objects/minotaur1.js';
 import { chestClosed, chestTrigger, chestCollider } from '../objects/chestClosed.js';
 import { chestOpened } from '../objects/cehstOpened.js';
 import { ChestTrigger } from '../objects/chestTrigger.js';
@@ -21,7 +21,7 @@ import { SuperSword } from '../objects/superSword.js';
 import { Light } from './Light.js';
 import { Player } from './player.js';
 import { Chest } from '../objects/chest.js';
-// import { Minotaur } from '../objects/minotaur.js';
+import { Minotaur } from '../objects/minotaur.js';
 import { Audio } from './Audio.js';
 
 const canvas = document.getElementById("canvas")
@@ -81,13 +81,13 @@ for(var i = 1; i <= 1; i++) {
 
 console.log(camera)
 
-// minotaur trigger
-// let minotaur = new Minotaur(minotaurNode, scene,  camera.components[2]);
-// minotaurTriggerNode.triggerHandler = minotaur;
-// scene.addChild(minotaur.getNode());
-// scene.addChild(minotaurTriggerNode);
+//minotaur trigger
+let minotaur = new Minotaur(minotaurNode, scene,  camera.components[2]);
+minotaurTriggerNode.triggerHandler = minotaur;
+scene.addChild(minotaur.getNode());
+scene.addChild(minotaurTriggerNode);
 
-scene.addChild(minotaurNode);
+//scene.addChild(minotaurNode);
 
 
 // chest trigger 
@@ -107,7 +107,7 @@ scene.addChild(chestCollider);
 scene.addChild(chestTriggerNode);
 scene.addChild(chest.currentNode);
 
-console.log("trig", chestTrigger)
+//console.log("trig", chestTrigger)
 
 console.log(camera)
 const physics = new Physics(scene);

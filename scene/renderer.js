@@ -238,7 +238,12 @@ export class Renderer extends BaseRenderer {
         this.renderLight(cameraLight);
 
         
-        this.renderNode(scene);
+        //this.renderNode(scene);
+        for (const child of scene.children) {
+            if (child.visible) {
+                this.renderNode(child);
+            }
+        }
         for (const child of camera.children) {
             if (child.visible && child !== cameraLight) {
                 this.renderNode(child);
@@ -280,6 +285,9 @@ export class Renderer extends BaseRenderer {
     
 
     renderNode(node, modelMatrix = mat4.create()) {
+
+    
+
         const localMatrix = getLocalModelMatrix(node);
         modelMatrix = mat4.multiply(mat4.create(), modelMatrix, localMatrix);
         const normalMatrix = mat4.normalFromMat4(mat4.create(), modelMatrix);

@@ -1,18 +1,54 @@
-import { GLTFLoader } from 'engine/loaders/GLTFLoader.js';
+export class Minotaur {
+    constructor(
+        minotaur,
+        scene,
+        player,
+    ) {
+        this.minotaur = minotaur;
+        this.currentNode = minotaur;
+        this.player = player;
 
-const gltfLoader = new GLTFLoader();
-await gltfLoader.load(new URL('assets/minotaur.gltf', import.meta.url));
+        this.hp = 100;
+        this.isDead = false;
+        this.isHit = false;
 
-const minotaur = gltfLoader.loadNode('Cube');
-//console.log(minotaur)
+        this.scene = scene;
+    }
 
-const transform = minotaur.components[0]; // The first component is the Transform
-// Update the translation property
-transform.translation = [-10, 7, 0];
-//console.log(minotaur)
-minotaur.update = (time, dt) => {
-    //
+    
 
-};
+    setTranslation(x, y, z) {
+        this.currentNode.components[0].translation = [x, y, z];
+        this.updateNodeTransform();
+    }
 
-export { minotaur };
+    setScale(x, y, z) {
+        this.currentNode.components[0].scale = [x, y, z];
+        this.updateNodeTransform();
+    }
+
+    setRotation(x, y, z, w) {
+        this.currentNode.components[0].rotation = [x, y, z, w];
+        this.updateNodeTransform();
+    }
+    getNode() {
+        return this.minotaur;
+    }
+    onTrigger() {
+        
+        //console.log(this.player.hit)
+        if(this.player.hit) {
+            //console.log("uwu");
+            this.hp -= 0.1;
+           // console.log(this.hp)
+        }
+        this.player.minotaurHitTimer -= 0.1;
+        console.log(this.player.minotaurHitTimer )
+    
+    }
+    addDamage() {
+        
+    }
+
+    
+}

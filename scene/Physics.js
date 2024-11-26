@@ -12,8 +12,10 @@ export class Physics {
         this.scene.traverse(node => {
             if (node.isDynamic) {
                 this.scene.traverse(other => {
-                    if (node !== other && other.isStatic) {
-                        this.resolveCollision(node, other);
+                    if (node !== other) {
+                        if (other.isStatic || other.isTrigger) {
+                            this.resolveCollision(node, other);
+                        }
                     }
                 });
             }
@@ -65,7 +67,15 @@ export class Physics {
             return;
         }
 
-        // Move node A minimally to avoid collision.
+        // Handle trigger objects.
+        if (b.isTrigger) {
+            //b.onTrigger();
+            b.triggerHandler.onTrigger();
+            //console.log("triggerrrr")
+            return true; // Indicate a trigger event occurred.
+        }
+
+        // Move node A minimally to avoid collision if B is not a trigger.
         const diffa = vec3.sub(vec3.create(), bBox.max, aBox.min);
         const diffb = vec3.sub(vec3.create(), aBox.max, bBox.min);
 

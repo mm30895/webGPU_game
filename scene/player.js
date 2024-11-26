@@ -12,7 +12,7 @@ export class Player {
         {
             pitch = 0,
             yaw = 0,
-            moveSpeed = 10, // Constant speed for movement
+            moveSpeed = 20, // Constant speed for movement
             pointerSensitivity = 0.002,
             lightSpeedFactor = 0.01, // Added to control light speed
         } = {}
@@ -37,6 +37,8 @@ export class Player {
         this.rotationTimer = 0; // Timer to track rotation state duration
         this.rotationDuration = 0.5; // Duration of 1 second for changed rotation
 
+        this.minotaurHitTimer = 50;
+
         this.initHandlers();
         this.initChildTransforms();
     }
@@ -45,12 +47,14 @@ export class Player {
         this.pointermoveHandler = this.pointermoveHandler.bind(this);
         this.keydownHandler = this.keydownHandler.bind(this);
         this.keyupHandler = this.keyupHandler.bind(this);
+        this.mousedownHandler = this.mousedownHandler.bind(this);
 
         const element = this.domElement;
         const doc = element.ownerDocument;
 
         doc.addEventListener('keydown', this.keydownHandler);
         doc.addEventListener('keyup', this.keyupHandler);
+        doc.addEventListener('mousedown', this.mousedownHandler);
 
         element.addEventListener('click', () => element.requestPointerLock());
 
@@ -61,6 +65,16 @@ export class Player {
                 doc.removeEventListener('pointermove', this.pointermoveHandler);
             }
         });
+    }
+
+    mousedownHandler(e) {
+        if (e.button === 0) { // Left mouse button
+            if (!this.hit) {
+                this.staticRotation = new vec4(0.3, -0.9, 0.3, 0); 
+                this.hit = true;
+                this.rotationTimer = 0; 
+            }
+        }
     }
 
     initChildTransforms() {
@@ -101,14 +115,6 @@ export class Player {
         if (this.keys['KeyO']) {
             this.awsomeSword.visible = false;
             this.sword.visible = true;
-        }
-
-        if (this.keys['Space']) {
-            if (!this.hit) {
-                this.staticRotation = new vec4(0.3, -0.9, 0.3, 0); // New rotation
-                this.hit = true;
-                this.rotationTimer = 0; // Reset the timer when the key is pressed
-            }
         }
 
         // Update the timer for rotation duration

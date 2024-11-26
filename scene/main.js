@@ -14,13 +14,16 @@ import {
 } from 'engine/core/MeshUtils.js';
 
 import { Physics } from './Physics.js';
-import { minotaur } from '../objects/minotaur.js';
+import { minotaurNode} from '../objects/minotaur1.js';
 import { chestClosed } from '../objects/chestClosed.js';
 import { chestOpened } from '../objects/cehstOpened.js';
+import { ChestTrigger } from '../objects/chestTrigger.js';
 import { BoringSword } from '../objects/boringSword.js';
 import { SuperSword } from '../objects/superSword.js';
 import { Light } from './Light.js';
 import { Player } from './player.js';
+import { Chest } from '../objects/chest.js';
+import { Minotaur } from '../objects/minotaur.js';
 
 const canvas = document.getElementById("canvas")
 const renderer = new Renderer(canvas);
@@ -55,10 +58,10 @@ document.addEventListener('click', () => {
 })
 
 const loader = new GLTFLoader();
-await loader.load('assets/scene2-6.gltf');
+await loader.load('assets/scene2-7.gltf');
 //const scene = loader.loadScene(loader.defaultScene);
 const scene = loader.loadScene('Scene');
-const camera = loader.loadNode('Camera');
+const camera = loader.loadNode('Camera.001');
 
 //loading the objects
 const boringSword = new BoringSword('assets/boring_sword.gltf', 'Cube.004');
@@ -73,6 +76,7 @@ superSword.getNode().visible = false;
 //console.log(superSword.getNode())
 camera.addChild(superSword.getNode())
 
+
 const light = new Node();
 light.addComponent(new Light());
 light.addComponent(new Transform());
@@ -86,28 +90,43 @@ console.log(camera)
 camera.addComponent(new Player(camera, canvas, boringSword.getNode(), superSword.getNode(), light));
 camera.isDynamic = true;
 camera.aabb = {
-    min: [-0.5, -2, -0.5],
-    max: [0.5, 0.7, 0.5],
+    min: [-1, -1, -1],
+    max: [5, 10, 5],
 };
+for(var i = 1; i <= 9; i++) {
+    loader.loadNode(`Cube.00${i}`).isStatic = true;
+    loader.loadNode(`Cube.00${i}`).visible = true;
+}
+for(var i = 1; i <= 1; i++) {
+    loader.loadNode(`Trigger.00${i}`).visible = false;
+    loader.loadNode(`Trigger.00${i}`).isTrigger = true;
+}
 
-loader.loadNode('Plane.001').isStatic = true;
-loader.loadNode('Plane.002').isStatic = true;
-loader.loadNode('Plane').isStatic = true;
+console.log(camera)
+
+// minotaur trigger
+// let minotaur = new Minotaur(minotaurNode, scene,  camera.components[2]);
+// minotaurTriggerNode.triggerHandler = minotaur;
+// scene.addChild(minotaur.getNode());
+// scene.addChild(minotaurTriggerNode);
+
+scene.addChild(minotaurNode);
 
 
-// add the obj
+// chest trigger 
+let chest = new Chest(chestClosed, chestOpened, scene, camera.components[2]);
+const chestTrigger = new ChestTrigger('assets/chestTrigger.gltf', 'Trigger.001', chest);
+await chestTrigger.load();
 
-scene.addChild(minotaur);
-scene.addChild(chestOpened);
-//scene.addChild(superSword);
-//scene.addChild(boringSword);
+const chestTriggerNode = chestTrigger.getNode();
+chestTriggerNode.visible = true;
+chestTriggerNode.isTrigger = true;
+chestTriggerNode.triggerHandler = chestTrigger;
 
-//console.log(boringSword);
-minotaur.isStatic = true;
-//console.log(scene)
-//camera.addChild(boringSword);
+scene.addChild(chestTriggerNode);
+scene.addChild(chest.currentNode);
 
-
+console.log("scene", scene)
 
 console.log(camera)
 const physics = new Physics(scene);

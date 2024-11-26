@@ -66,10 +66,13 @@ export class Chest {
             this.currentNode = this.chestOpened;
 
             console.log("Chest has been opened!");
-
-            this.player.awsomeSword.visible = true;
-            this.player.sword.visible = false;
-            scene.addChild(this.player.awsomeSword)
+            
+            setTimeout(() => {
+                console.log("Timer triggered: Sword visibility updated.");
+                this.player.awsomeSword.visible = true;
+                this.player.sword.visible = false;
+            }, 1000); // 1 second delay
+            //scene.addChild(this.player.awsomeSword)
 
         }
     }

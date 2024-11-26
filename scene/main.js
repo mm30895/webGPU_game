@@ -13,7 +13,7 @@ import {
 
 import { Physics } from './Physics.js';
 import { minotaurNode} from '../objects/minotaur1.js';
-import { chestClosed } from '../objects/chestClosed.js';
+import { chestClosed, chestTrigger, chestCollider } from '../objects/chestClosed.js';
 import { chestOpened } from '../objects/cehstOpened.js';
 import { ChestTrigger } from '../objects/chestTrigger.js';
 import { BoringSword } from '../objects/boringSword.js';
@@ -92,18 +92,22 @@ scene.addChild(minotaurNode);
 
 // chest trigger 
 let chest = new Chest(chestClosed, chestOpened, scene, camera.components[2]);
-const chestTrigger = new ChestTrigger('assets/chestTrigger.gltf', 'Trigger.001', chest);
-await chestTrigger.load();
+const chestTriggerN = new ChestTrigger(chestTrigger, chest);
+//await chestTrigger.load();
 
-const chestTriggerNode = chestTrigger.getNode();
-chestTriggerNode.visible = true;
+const chestTriggerNode = chestTriggerN.getNode();
+chestTriggerNode.visible = false;
 chestTriggerNode.isTrigger = true;
-chestTriggerNode.triggerHandler = chestTrigger;
+chestTriggerNode.triggerHandler = chestTriggerN;
 
+
+chestCollider.isStatic = true;
+chestCollider.visible = false;
+scene.addChild(chestCollider);
 scene.addChild(chestTriggerNode);
 scene.addChild(chest.currentNode);
 
-console.log("scene", scene)
+console.log("trig", chestTrigger)
 
 console.log(camera)
 const physics = new Physics(scene);

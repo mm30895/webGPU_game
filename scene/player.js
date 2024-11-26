@@ -39,6 +39,8 @@ export class Player {
 
         this.minotaurHitTimer = 50;
 
+        this.pickup = false;
+
         this.initHandlers();
         this.initChildTransforms();
     }
@@ -70,7 +72,7 @@ export class Player {
     mousedownHandler(e) {
         if (e.button === 0) { // Left mouse button
             if (!this.hit) {
-                this.staticRotation = new vec4(0.3, -0.9, 0.3, 0); 
+                this.staticRotation = new vec4(0.3, -0.9, 0.3, 0); // sword animation
                 this.hit = true;
                 this.rotationTimer = 0; 
             }
@@ -116,12 +118,16 @@ export class Player {
             this.awsomeSword.visible = false;
             this.sword.visible = true;
         }
+        if (this.keys['KeyE']) {
+            this.pickup = true;
+        }
+
 
         // Update the timer for rotation duration
         if (this.hit) {
             this.rotationTimer += dt;
             if (this.rotationTimer >= this.rotationDuration) {
-                this.staticRotation = new vec4(0, 0.3, 0, 0); // Reset to default rotation
+                this.staticRotation = new vec4(0.1, 0.8, 0, 0);// Reset to default rotation
                 this.hit = false;
             }
         }

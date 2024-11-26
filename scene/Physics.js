@@ -71,7 +71,7 @@ export class Physics {
         if (b.isTrigger) {
             //b.onTrigger();
             b.triggerHandler.onTrigger();
-            //console.log("triggerrrr")
+            console.log("triggerrrr")
             return true; // Indicate a trigger event occurred.
         }
 

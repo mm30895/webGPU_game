@@ -30,6 +30,17 @@ export class Audio {
 		effect.buffer = await this.loadAudio(path);
 		effect.connect(this.audioContext.destination);
 		effect.start();
-		console.log(path);
+	}
+
+	async playFootsteps(path) {
+		const walking = this.audioContext.createBufferSource();
+		walking.buffer = await this.loadAudio(path);
+		walking.connect(this.audioContext.destination);
+		walking.start();
+		this.isPlaying = true;
+
+		setTimeout(() => {
+			this.isPlaying = false;
+		}, 1500); 
 	}
 }

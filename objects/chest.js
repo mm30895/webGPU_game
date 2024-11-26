@@ -1,3 +1,5 @@
+import { Audio } from '../scene/Audio.js';
+
 export class Chest {
     constructor(
         chestClosed,
@@ -65,6 +67,8 @@ export class Chest {
             // Set the current node to the opened chest
             this.currentNode = this.chestOpened;
 
+            const effect = new Audio();
+            effect.playEffect('./audio/chest effect.mp3');
             console.log("Chest has been opened!");
             
             setTimeout(() => {

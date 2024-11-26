@@ -1,6 +1,7 @@
 import { quat, vec3, vec4 } from 'glm';
 import { Transform } from 'engine/core/Transform.js';
 import { Light } from './Light.js';
+import { Audio } from '../scene/Audio.js';
 
 export class Player {
     constructor(
@@ -74,7 +75,10 @@ export class Player {
             if (!this.hit) {
                 this.staticRotation = new vec4(0.3, -0.9, 0.3, 0); // sword animation
                 this.hit = true;
-                this.rotationTimer = 0; 
+                this.rotationTimer = 0;
+
+                const effect = new Audio();
+                effect.playEffect('./audio/sword-stab-push-melee-weapon-236206.mp3');
             }
         }
     }
@@ -137,6 +141,13 @@ export class Player {
         const sin = Math.sin(this.yaw);
         const forward = [-sin, 0, -cos];
         const right = [cos, 0, -sin];
+
+        // audio instance for playing the sound of footsteps (plays during keypress) and lags awfully :(
+        /* const audio = new Audio();
+        const moving = this.keys['KeyW'] || this.keys['KeyA'] || this.keys['KeyS'] || this.keys['KeyD'];
+        if (moving && !audio.isPlaying) {
+            audio.playFootsteps('./audio/walking.mp3');
+        } */
 
         // Constant movement in the direction of keys pressed
         const acc = vec3.create();

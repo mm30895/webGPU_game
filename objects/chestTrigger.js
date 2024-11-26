@@ -1,5 +1,4 @@
 import { GLTFLoader } from 'engine/loaders/GLTFLoader.js';
-import { Audio } from '../scene/Audio.js';
 
 export class ChestTrigger {
     constructor(chestTrigger, chest) {
@@ -25,7 +24,5 @@ export class ChestTrigger {
     }
     onTrigger() {
         this.chest.openChest();
-        const effect = new Audio();
-        effect.playEffect('./audio/mixkit-mechanical-crate-pick-up-3154.mp3');
     }
 }

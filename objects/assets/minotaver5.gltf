@@ -11,7 +11,8 @@
 		{
 			"name":"Scene",
 			"nodes":[
-				11
+				11,
+				12
 			]
 		}
 	],
@@ -77,11 +78,25 @@
 				10
 			],
 			"mesh":11,
-			"name":"Cube",
+			"name":"Cube.004",
 			"scale":[
 				0.4000000059604645,
 				0.4000000059604645,
 				0.4000000059604645
+			]
+		},
+		{
+			"mesh":12,
+			"name":"Trigger",
+			"scale":[
+				1.425909161567688,
+				2.4789488315582275,
+				0.8604921102523804
+			],
+			"translation":[
+				-0.03268247842788696,
+				2.4860990047454834,
+				0.33682847023010254
 			]
 		}
 	],
@@ -99,9 +114,9 @@
 			"name":"CubeAction.001",
 			"samplers":[
 				{
-					"input":48,
+					"input":52,
 					"interpolation":"LINEAR",
-					"output":49
+					"output":53
 				}
 			]
 		}
@@ -175,11 +190,6 @@
 		},
 		{
 			"doubleSided":true,
-			"emissiveFactor":[
-				0.11122042978685798,
-				0.0021355804904532594,
-				0.014181790691883966
-			],
 			"name":"Material.002",
 			"pbrMetallicRoughness":{
 				"baseColorTexture":{
@@ -367,6 +377,19 @@
 					},
 					"indices":47,
 					"material":7
+				}
+			]
+		},
+		{
+			"name":"Cube.007",
+			"primitives":[
+				{
+					"attributes":{
+						"POSITION":48,
+						"NORMAL":49,
+						"TEXCOORD_0":50
+					},
+					"indices":51
 				}
 			]
 		}
@@ -854,6 +877,40 @@
 		{
 			"bufferView":48,
 			"componentType":5126,
+			"count":24,
+			"max":[
+				1,
+				1,
+				1
+			],
+			"min":[
+				-1,
+				-1,
+				-1
+			],
+			"type":"VEC3"
+		},
+		{
+			"bufferView":49,
+			"componentType":5126,
+			"count":24,
+			"type":"VEC3"
+		},
+		{
+			"bufferView":50,
+			"componentType":5126,
+			"count":24,
+			"type":"VEC2"
+		},
+		{
+			"bufferView":51,
+			"componentType":5123,
+			"count":36,
+			"type":"SCALAR"
+		},
+		{
+			"bufferView":52,
+			"componentType":5126,
 			"count":1,
 			"max":[
 				0.75
@@ -864,7 +921,7 @@
 			"type":"SCALAR"
 		},
 		{
-			"bufferView":49,
+			"bufferView":53,
 			"componentType":5126,
 			"count":1,
 			"type":"VEC4"
@@ -1161,13 +1218,37 @@
 		},
 		{
 			"buffer":0,
+			"byteLength":288,
+			"byteOffset":367692,
+			"target":34962
+		},
+		{
+			"buffer":0,
+			"byteLength":288,
+			"byteOffset":367980,
+			"target":34962
+		},
+		{
+			"buffer":0,
+			"byteLength":192,
+			"byteOffset":368268,
+			"target":34962
+		},
+		{
+			"buffer":0,
+			"byteLength":72,
+			"byteOffset":368460,
+			"target":34963
+		},
+		{
+			"buffer":0,
 			"byteLength":4,
-			"byteOffset":367692
+			"byteOffset":368532
 		},
 		{
 			"buffer":0,
 			"byteLength":16,
-			"byteOffset":367696
+			"byteOffset":368536
 		}
 	],
 	"samplers":[
@@ -1178,7 +1259,7 @@
 	],
 	"buffers":[
 		{
-			"byteLength":367712,
+			"byteLength":368552,
 			"uri":"minotaver5.bin"
 		}
 	]

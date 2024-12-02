@@ -1,9 +1,9 @@
 import { GLTFLoader } from 'engine/loaders/GLTFLoader.js';
 
 const gltfLoader = new GLTFLoader();
-await gltfLoader.load(new URL('assets/minotaver5-1.gltf', import.meta.url));
+await gltfLoader.load(new URL('assets/minotaver5.gltf', import.meta.url));
 
-const minotaurNode = gltfLoader.loadNode('Cube.003');
+const minotaurNode = gltfLoader.loadNode('Cube.004');
 const minotaurTriggerNode = gltfLoader.loadNode('Trigger');
 
 

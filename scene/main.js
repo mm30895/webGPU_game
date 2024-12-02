@@ -35,7 +35,7 @@ document.addEventListener('click', () => {
 });
 
 const loader = new GLTFLoader();
-await loader.load('assets/scene2-7.gltf');
+await loader.load('assets/scene2-9.gltf');
 //const scene = loader.loadScene(loader.defaultScene);
 const scene = loader.loadScene('Scene');
 const camera = loader.loadNode('Camera.001');
@@ -70,6 +70,7 @@ camera.aabb = {
     min: [-1, -1, -1],
     max: [5, 10, 5],
 };
+loader.loadNode('Cube').visible = true;
 for(var i = 2; i <= 9; i++) {
     loader.loadNode(`Cube.00${i}`).isStatic = true;
     loader.loadNode(`Cube.00${i}`).visible = true;

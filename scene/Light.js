@@ -3,7 +3,7 @@ import {vec3, quat} from 'glm'
 export class Light {
 
     constructor({
-        color = [ 255*1.0, 255*0.8, 255*0.5], // white
+        color = [ 1.0, 0.9, 0.9], // white
         direction = [0, 1, 0],
         position = [12.2,
             7.299824600219727,

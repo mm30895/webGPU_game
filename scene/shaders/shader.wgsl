@@ -73,21 +73,36 @@ fn fragment(input: FragmentInput) -> FragmentOutput {
     let lightDir = normalize(light.position - input.worldPos);
     let lambert = max(dot(N, lightDir), 0.0);
 
-    let intensityFactor = 0.5;  //  light brighter/dimmer
+    let intensityFactor = 200f;  //  light brighter/dimmer
     let pointLight = lambert * light.color * intensityFactor;
 
 
     let baseColor = textureSample(baseTexture, baseSampler, input.texcoords) * material.baseFactor;
-    let ambientLight = vec3f(0.02, 0.02, 0.02);
+    let baseColor2 = pow(baseColor, vec4f(2.2));
+    let ambientLight = vec3f(0.0001, 0.0001, 0.0001);
 
-    let finalPointColor = baseColor.rgb * (pointLight / pow(length(light.position - input.worldPos), 2));//popravi pow
-    let ambientColor = baseColor.rgb * ambientLight;
+    
+
+    let finalPointColor = baseColor2.rgb * (pointLight / pow(distance(light.position, input.worldPos), 2));//popravi pow
+    let ambientColor = baseColor2.rgb * ambientLight;
     let finalColor = finalPointColor + ambientColor;//popravi
 
+    //fog
+    let cameraPosition = light.position; // Assuming light.position is the camera's position
+    let fogColor = vec3f(0, 0, 0); // Fog color (dark gray)
+    let distanceToCamera = distance(cameraPosition, input.worldPos);
+    let fogStart = 5.0;   // Start of the fog effect
+    let fogEnd = 150.0;    // End of the fog effect
+    let fogFactor = clamp((distanceToCamera - fogStart) / (fogEnd - fogStart), 0.0, 1.0);
 
-    //let diffuseLight = basecolor * vec4(lambert * light.color, 1);
-    //output.color = diffuseLight + ambientLight;
-    output.color =vec4(finalColor,1);
+    // Mix final color with fog color based on fog factor
+    let foggedColor = mix(finalColor, fogColor, fogFactor);
+
+
+    // let diffuseLight = basecolor * vec4(lambert * light.color, 1);
+    // output.color = diffuseLight + ambientLight;
+    let gamma = vec4f(1/2.2); // gamma factor
+    output.color =  pow(vec4f(foggedColor,1), gamma);
 
     return output;
 }

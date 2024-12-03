@@ -47,6 +47,9 @@ export class Minotaur {
                 this.hitTimer = this.hitTimerMax; 
                 this.takeDamage(this.player.awsome ? 15 : 5);
             }
+
+            // camera shake
+            this.player.shake(0.07, 0.1);
         }
 
         this.player.minotaurHitTimer -= 0.1;

@@ -88,6 +88,13 @@ export class Player {
         }
     }
 
+    shake(factor, length) {
+        this.shkIntensity = factor;
+        this.shkLength = length;
+        this.shkTime = 0;
+        this.shaking = true;
+    }
+
     initChildTransforms() {
         const cameraPos = this.node.getComponentOfType(Transform).translation;
 
@@ -168,7 +175,31 @@ export class Player {
         const moving = this.keys['KeyW'] || this.keys['KeyA'] || this.keys['KeyS'] || this.keys['KeyD'];
         if (moving && !this.audio.isPlaying) {
             this.audio.playFootsteps('./audio/walking.mp3');
-        } 
+        }
+        
+        // camera shaking during walking
+        if (moving && !this.shaking) {
+            this.shake(0.03, 0.1);
+        }
+
+        if (this.shaking) {
+            this.shkTime += dt;
+
+            if (this.shkTime > this.shkLength) {
+                this.shaking = false;
+            } else {
+                const transform = this.node.getComponentOfType(Transform);
+                if (transform) {
+                    const shkX = (Math.random() * 2 - 1) * this.shkIntensity;
+                    const shkY = (Math.random() * 2 - 1) * this.shkIntensity;
+                    const shkZ = (Math.random() * 2 - 1) * this.shkIntensity;
+
+                    transform.translation[0] += shkX;
+                    transform.translation[1] += shkY;
+                    transform.translation[2] += shkZ;
+                }
+            }
+        }
 
         // Constant movement in the direction of keys pressed
         const acc = vec3.create();

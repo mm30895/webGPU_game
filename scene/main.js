@@ -74,7 +74,7 @@ camera.aabb = {
     max: [5, 10, 5],
 };
 loader.loadNode('tla').visible = true;
-for(var i = 2; i <= 40; i++) {
+for(var i = 1; i <= 41; i++) {
     loader.loadNode(`wall.0${i}`).isStatic = true;
     loader.loadNode(`wall.0${i}`).visible = true;
 }

@@ -164,7 +164,7 @@ export class Player {
         const forward = [-sin, 0, -cos];
         const right = [cos, 0, -sin];
 
-        // audio instance for playing the sound of footsteps (plays during keypress) and lags awfully :(
+        // audio instance for playing the sound of footsteps (plays during keypress)
         const moving = this.keys['KeyW'] || this.keys['KeyA'] || this.keys['KeyS'] || this.keys['KeyD'];
         if (moving && !this.audio.isPlaying) {
             this.audio.playFootsteps('./audio/walking.mp3');

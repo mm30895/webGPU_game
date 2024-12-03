@@ -1,5 +1,8 @@
+import { Audio } from '../scene/Audio.js';
+const combatMusic = new Audio();
+
 export class Minotaur {
-    constructor(minotaur, scene, player) {
+    constructor(minotaur, scene, player, ambientMusic) {
         this.minotaur = minotaur;
         this.currentNode = minotaur;
         this.player = player;
@@ -8,6 +11,7 @@ export class Minotaur {
         this.isDead = false;
 
         this.scene = scene;
+        this.ambientMusic = ambientMusic;
 
         this.hitTimer = 100;
         this.hitTimerMax = 100;
@@ -34,6 +38,9 @@ export class Minotaur {
     }
 
     onTrigger() {
+        this.ambientMusic.stop();
+        combatMusic.playMusic('./audio/Combat Music.mp3');
+
         if (this.player.hit) {
             this.hitTimer -= 1;
             if (this.hitTimer <= 0) {
@@ -49,6 +56,7 @@ export class Minotaur {
             this.player.hp -= 25; 
             console.log("Player HP: ", this.player.hp);
         }
+
         this.hpBarVisible();
     }
 

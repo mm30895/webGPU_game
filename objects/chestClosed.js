@@ -10,5 +10,6 @@ const chestTrigger = gltfLoader.loadNode('ChestTrigger');
 const chestCollider= gltfLoader.loadNode('chestCollider');
 
 
+
 export { chestClosed, chestTrigger, chestCollider };
 

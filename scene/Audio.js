@@ -3,6 +3,7 @@ export class Audio {
 	constructor() {
 		this.audioContext = new (window.AudioContext)();
 		this.isPlaying = false;
+		this.music = null;
 	}
 	
 	async loadAudio(url) {
@@ -17,12 +18,17 @@ export class Audio {
 			return;
 		}
 
-		const music = this.audioContext.createBufferSource();
-		music.buffer = await this.loadAudio(path);
-		music.loop = true;
-		music.connect(this.audioContext.destination);
-		music.start();
+		this.music = this.audioContext.createBufferSource();
+		this.music.buffer = await this.loadAudio(path);
+		this.music.loop = true;
+		this.music.connect(this.audioContext.destination);
+		this.music.start();
 		this.isPlaying = true;
+	}
+
+	stop() {
+		this.music.stop();
+		this.music.disconnect();
 	}
 
 	async playEffect(path) {

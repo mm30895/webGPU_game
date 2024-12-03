@@ -83,7 +83,7 @@ for(var i = 1; i <= 1; i++) {
 console.log(camera)
 
 //minotaur trigger
-let minotaur = new Minotaur(minotaurNode, scene,  camera.components[2]);
+let minotaur = new Minotaur(minotaurNode, scene,  camera.components[2], music);
 minotaurTriggerNode.triggerHandler = minotaur;
 scene.addChild(minotaur.getNode());
 scene.addChild(minotaurTriggerNode);

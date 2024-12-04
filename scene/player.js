@@ -88,11 +88,13 @@ export class Player {
         }
     }
 
-    shake(factor, length) {
+    shake(factor, length, timer, hit) {
         this.shkIntensity = factor;
         this.shkLength = length;
+        this.shkTimer = timer;
         this.shkTime = 0;
         this.shaking = true;
+        this.hit = hit
     }
 
     initChildTransforms() {
@@ -179,24 +181,29 @@ export class Player {
         
         // camera shaking during walking
         if (moving && !this.shaking) {
-            this.shake(0.03, 0.1);
+            this.shake(0.05, 0.01, 0.0058, false);
         }
 
         if (this.shaking) {
             this.shkTime += dt;
+            this.shkTimer -= dt;
 
             if (this.shkTime > this.shkLength) {
                 this.shaking = false;
             } else {
                 const transform = this.node.getComponentOfType(Transform);
-                if (transform) {
-                    const shkX = (Math.random() * 2 - 1) * this.shkIntensity;
+                if (transform && this.shkTimer <= 0) {
                     const shkY = (Math.random() * 2 - 1) * this.shkIntensity;
-                    const shkZ = (Math.random() * 2 - 1) * this.shkIntensity;
-
-                    transform.translation[0] += shkX;
                     transform.translation[1] += shkY;
-                    transform.translation[2] += shkZ;
+
+                    if (this.hit) {
+                        const shkX = (Math.random() * 2 - 1) * this.shkIntensity;
+                        const shkZ = (Math.random() * 2 - 1) * this.shkIntensity;
+
+                        transform.translation[0] += shkX;
+                        transform.translation[2] += shkZ;
+                    }
+                    this.shkTimer = 0.0058;
                 }
             }
         }

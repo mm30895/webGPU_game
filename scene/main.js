@@ -75,6 +75,9 @@ camera.aabb = {
 };
 loader.loadNode('tla').visible = true;
 for(var i = 1; i <= 41; i++) {
+    if (loader.loadNode(`wall.0${i}`) == null) {
+        console.log(i);
+    }
     loader.loadNode(`wall.0${i}`).isStatic = true;
     loader.loadNode(`wall.0${i}`).visible = true;
 }

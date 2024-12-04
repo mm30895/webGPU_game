@@ -6,5 +6,6 @@ await gltfLoader.load(new URL('assets/skrinjaodprta+sword.gltf', import.meta.url
 const chestOpened = gltfLoader.loadScene(gltfLoader.defaultScene);
 chestOpened.visible = true;
 
-export { chestOpened };
+console.log(chestOpened);
 
+export { chestOpened };

@@ -49,7 +49,7 @@ export class Minotaur {
             }
 
             // camera shake
-            this.player.shake(0.07, 0.1);
+            this.player.shake(0.07, 0.1, 0, true);
         }
 
         this.player.minotaurHitTimer -= 0.1;

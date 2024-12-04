@@ -16,8 +16,8 @@ export class BoringSword {
         this.node = this.gltfLoader.loadNode(this.nodeName);
 
         // Set default properties
-        this.node.components[0].translation = [13.4, 7.299824600219727, -2];
-        this.node.components[0].scale = [0.3, 0.3, 0.3];
+        this.node.components[0].translation = [-69.5, 7, 160];
+        this.node.components[0].scale = [0.4, 0.4, 0.4];
         this.node.components[0].rotation = [0, 0, 0, 0];
     }
 

@@ -85,17 +85,16 @@ fn fragment(input: FragmentInput) -> FragmentOutput {
 
     let finalPointColor = baseColor2.rgb * (pointLight / pow(distance(light.position, input.worldPos), 2));//popravi pow
     let ambientColor = baseColor2.rgb * ambientLight;
-    let finalColor = finalPointColor + ambientColor;//popravi
+    let finalColor = finalPointColor + ambientColor;
 
     //fog
-    let cameraPosition = light.position; // Assuming light.position is the camera's position
-    let fogColor = vec3f(0, 0, 0); // Fog color (dark gray)
+    let cameraPosition = light.position; 
+    let fogColor = vec3f(0, 0, 0); 
     let distanceToCamera = distance(cameraPosition, input.worldPos);
-    let fogStart = 5.0;   // Start of the fog effect
-    let fogEnd = 150.0;    // End of the fog effect
+    let fogStart = 5.0;
+    let fogEnd = 150.0; 
     let fogFactor = clamp((distanceToCamera - fogStart) / (fogEnd - fogStart), 0.0, 1.0);
 
-    // Mix final color with fog color based on fog factor
     let foggedColor = mix(finalColor, fogColor, fogFactor);
 
 

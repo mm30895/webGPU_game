@@ -16,6 +16,7 @@ export class Player {
             moveSpeed = 20, // Constant speed for movement
             pointerSensitivity = 0.002,
             lightSpeedFactor = 0.01, // Added to control light speed
+            
         } = {}
     ) {
         this.node = node;
@@ -152,9 +153,6 @@ export class Player {
             this.awsomeSword.visible = false;
             this.sword.visible = true;
             this.awsome = false;
-        }
-        if (this.keys['KeyE']) {
-            this.pickup = true;
         }
 
 

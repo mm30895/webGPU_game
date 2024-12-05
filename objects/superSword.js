@@ -16,8 +16,8 @@ export class SuperSword {
         this.node = this.gltfLoader.loadNode(this.nodeName);
 
         // Set default properties
-        this.node.components[0].translation = [-69.5, 7, 160];
-        this.node.components[0].scale = [0.11, 0.05, 0.05];
+        this.node.components[0].translation = [-69, 8.7, 167.6];
+        this.node.components[0].scale = [0.11, 0.045, 0.05];
         this.node.components[0].rotation = [0, 0, 0, 0];
     }
 

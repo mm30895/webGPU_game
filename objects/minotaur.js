@@ -2,10 +2,11 @@ import { Audio } from '../scene/Audio.js';
 const combatMusic = new Audio();
 
 export class Minotaur {
-    constructor(minotaur, scene, player, ambientMusic) {
+    constructor(minotaur, scene, player, ambientMusic, wall) {
         this.minotaur = minotaur;
         this.currentNode = minotaur;
         this.player = player;
+        this.wall = wall;
 
         this.hp = 100;
         this.isDead = false;
@@ -19,6 +20,7 @@ export class Minotaur {
         this.minotaurHit = false; // if hit "animate"
         this.minotaurHitTimer = 0;
         this.originalRotation = [0, 0, 0, 0];
+        this.hpBarInvisible();
     }
 
     setTranslation(x, y, z) {
@@ -74,6 +76,10 @@ export class Minotaur {
     die() {
         this.isDead = true;
         console.log("Minotaur died");
+        this.hpBarInvisible();
+
+        // open the wall
+        this.wall.components[0].translation = [-36.4799 ,22.6679 ,  -53.0416  ];
     }
 
     updateHPBar() {
@@ -90,11 +96,11 @@ export class Minotaur {
     
     update(t, dt) {
         this.updateHPBar();
-        if (this.isDead) {
-            window.location.href = "winScreen.html";
-            return; 
-        }
-        this.hpBarInvisible();
+        // if (this.isDead) {
+        //     window.location.href = "winScreen.html";
+        //     return; 
+        // }
+        
     
         if (this.minotaurHit) {
             if (this.minotaurHitTimer === 0) {

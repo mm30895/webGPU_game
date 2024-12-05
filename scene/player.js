@@ -13,7 +13,7 @@ export class Player {
         {
             pitch = 0,
             yaw = 0,
-            moveSpeed = 20, // Constant speed for movement
+            moveSpeed = 40, // Constant speed for movement
             pointerSensitivity = 0.002,
             lightSpeedFactor = 0.01, // Added to control light speed
             

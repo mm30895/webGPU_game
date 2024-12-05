@@ -4,6 +4,8 @@ export class Audio {
 		this.audioContext = new (window.AudioContext)();
 		this.isPlaying = false;
 		this.music = null;
+		this.gainNode = this.audioContext.createGain();
+		this.gainNode.connect(this.audioContext.destination);
 	}
 	
 	async loadAudio(url) {
@@ -21,14 +23,22 @@ export class Audio {
 		this.music = this.audioContext.createBufferSource();
 		this.music.buffer = await this.loadAudio(path);
 		this.music.loop = true;
-		this.music.connect(this.audioContext.destination);
+		this.music.connect(this.gainNode);
+
+		this.gainNode.gain.setValueAtTime(0, this.audioContext.currentTime);
+        this.gainNode.gain.linearRampToValueAtTime(1, this.audioContext.currentTime + 2); // 1 second fade in
 		this.music.start();
 		this.isPlaying = true;
 	}
 
 	stop() {
-		this.music.stop();
-		this.music.disconnect();
+		this.gainNode.gain.setValueAtTime(this.gainNode.gain.value, this.audioContext.currentTime);
+        this.gainNode.gain.linearRampToValueAtTime(0, this.audioContext.currentTime + 2);
+
+		setTimeout(() => {
+            this.music.stop();
+            this.music.disconnect();
+        }, 2000);
 	}
 
 	async playEffect(path) {

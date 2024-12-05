@@ -35,7 +35,7 @@ document.addEventListener('click', () => {
 });
 
 const loader = new GLTFLoader();
-await loader.load('assets/2labirint.gltf');
+await loader.load('assets/3labirint.gltf');
 //const scene = loader.loadScene(loader.defaultScene);
 const scene = loader.loadScene('Scene');
 const camera = loader.loadNode('Camera.001');

@@ -40,8 +40,8 @@ export class Minotaur {
     }
 
     onTrigger() {
-        this.ambientMusic.stop();
-        combatMusic.playMusic('./audio/Combat Music.mp3');
+        //this.ambientMusic.stop();
+        //combatMusic.playMusic('./audio/Combat Music.mp3');
         if(!this.isDead) {
             if (this.player.hit) {
                 this.hitTimer -= 1;
@@ -82,6 +82,7 @@ export class Minotaur {
 
         // open the wall
         this.wall.components[0].translation = [-36.4799 ,22.6679 ,  -53.0416  ];
+        this.wall.visible = false;
     }
 
     updateHPBar() {

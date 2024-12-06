@@ -1,11 +1,8 @@
-/* Reset default styles */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
-
-/* Background styling */
 body {
     font-family: 'Roboto', sans-serif;
     background: url('minotaur.png') no-repeat center center fixed;
@@ -17,8 +14,6 @@ body {
     padding-left: 50px;
     min-height: 100vh;
 }
-
-/* Content container */
 .content {
     background-color: rgba(0, 0, 0, 0.6);
     padding: 30px;
@@ -26,39 +21,29 @@ body {
     text-align: left;
     max-width: 600px;
 }
-
-/* Header styling */
 h1 {
     font-size: 3rem;
     margin-bottom: 20px;
     font-weight: 700;
 }
-
-/* Paragraph styling */
 p {
     font-size: 1.5rem;
     margin-bottom: 20px;
     line-height: 1.5;
 }
-
-/* List styling */
 ul {
     list-style-type: none;
     padding: 0;
 }
-
 li {
     margin: 15px 0;
 }
-
-/* Link styling */
 a {
     color: #ffcc00;
     text-decoration: none;
     font-size: 1.5rem;
     font-weight: 700;
 }
-
 a:hover {
     color: #ffd700;
     text-decoration: underline;

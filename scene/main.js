@@ -12,7 +12,7 @@ import {
 } from 'engine/core/MeshUtils.js';
 
 import { Physics } from './Physics.js';
-import { minotaurNode, minotaurTriggerNode} from '../objects/minotaur1.js';
+import { minotaurNode, minotaurTriggerNode} from '../objects/minotaurLoader.js';
 import { chestClosed, chestTrigger, chestCollider } from '../objects/chestClosed.js';
 import { chestOpened } from '../objects/cehstOpened.js';
 import { ChestTrigger } from '../objects/chestTrigger.js';
@@ -37,7 +37,6 @@ const music = new Audio();
 
 const loader = new GLTFLoader();
 await loader.load('assets/Labirint3.gltf');
-//const scene = loader.loadScene(loader.defaultScene);
 const scene = loader.loadScene('Scene');
 const camera = loader.loadNode('Camera.001');
 if (!camera) {
@@ -48,67 +47,63 @@ if (!camera) {
 const boringSword = new BoringSword('assets/boring_sword.gltf', 'Cube.004');
 await boringSword.load();
 boringSword.getNode().visible = true;
-//console.log(boringSword.getNode())
 camera.addChild(boringSword.getNode());
 
 const superSword = new SuperSword('assets/cool_sword.gltf', 'Cube.006');
 await superSword.load();
 superSword.getNode().visible = false;
-//console.log(superSword.getNode())
 camera.addChild(superSword.getNode())
 
 
+// light
 const light = new Node();
 light.addComponent(new Light());
+// light.addComponent(new Camera({
+//     near: 5,
+//     far: 20,
+//     fovy: 0.3,
+// }));
 light.addComponent(new Transform());
 camera.addChild(light);
 
-const light2 = new Node();
-light2.addComponent(new Light());
-scene.addChild(light2)
-console.log(camera)
-
+// player
 camera.addComponent(new Player(camera, canvas, boringSword.getNode(), superSword.getNode(), light));
 camera.isDynamic = true;
 camera.aabb = {
     min: [-1, -1, -1],
     max: [5, 10, 5],
 };
+
+//load scene
 loader.loadNode('tla').visible = true;
 for(var i = 1; i <= 41; i++) {
     if (loader.loadNode(`wall.0${i}`) == null) {
-        console.log(i);
     }
     loader.loadNode(`wall.0${i}`).isStatic = true;
     loader.loadNode(`wall.0${i}`).visible = true;
 }
 
-//console.log(camera)
 
 //close the end wall
 const wall = loader.loadNode('wall.042');
+wall.isStatic = true;
+wall.visible = true;
 wall.addComponent(Transform);
-console.log(wall)
-wall.components[0].translation = [-171.852  , 22.8936, -61.0778  ]
+wall.components[0].translation = [-171.852, 22.8936, -61.0778];
 //minotaur trigger
 let minotaur = new Minotaur(minotaurNode, scene,  camera.components[2], music, wall);
 minotaurTriggerNode.triggerHandler = minotaur;
 scene.addChild(minotaur.getNode());
 scene.addChild(minotaurTriggerNode);
 
-//scene.addChild(minotaurNode);
-
 
 // chest trigger 
 let chest = new Chest(chestClosed, chestOpened, scene, camera.components[2]);
 const chestTriggerN = new ChestTrigger(chestTrigger, chest);
-//await chestTrigger.load();
-
 const chestTriggerNode = chestTriggerN.getNode();
 chestTriggerNode.visible = false;
 chestTriggerNode.isTrigger = true;
 chestTriggerNode.triggerHandler = chestTriggerN;
-
 
 chestCollider.isStatic = true;
 chestCollider.visible = false;
@@ -122,36 +117,35 @@ scene.addChild(chest.currentNode);
 var mainTrig = loader.loadNode('Trigger.001');
 var mainEntryTrig = new mainEntry(music);
 mainTrig.isTrigger = true;
-mainTrig.visible = true;
+mainTrig.visible = false;
 mainTrig.triggerHandler = mainEntryTrig;
 const combatMusic = new Audio();
 var enemyEntTrig = loader.loadNode('Trigger.002');
 var enemyEntTrigH = new enemyEntry(music, minotaur, combatMusic);
 enemyEntTrig.isTrigger = true;
-enemyEntTrig.visible = true;
+enemyEntTrig.visible = false;
 enemyEntTrig.triggerHandler = enemyEntTrigH;
 const music2 = new Audio();
 var enemyExtTrig = loader.loadNode('Trigger.003');
 var enemyExtTrigH = new enemyExit(music2, minotaur, combatMusic);
 enemyExtTrig.isTrigger = true;
-enemyExtTrig.visible = true;
+enemyExtTrig.visible = false;
 enemyExtTrig.triggerHandler = enemyExtTrigH;
 const combatMusic2 = new Audio();
 var enemyEntTrigBoss = loader.loadNode('Trigger.004');
 var enemyEntTrigBossH = new enemyEntry(music2, minotaur, combatMusic2);
 enemyEntTrigBoss.isTrigger = true;
-enemyEntTrigBoss.visible = true;
+enemyEntTrigBoss.visible = false;
 enemyEntTrigBoss.triggerHandler = enemyEntTrigBossH;
 const music3 = new Audio();
-wall.isStatic = true;
-wall.visible = true;
 var mainExitTrig = loader.loadNode('Trigger.005');
 var mainExitTrigH = new mainExit(music3, minotaur, combatMusic2);
 mainExitTrig.isTrigger = true;
-mainExitTrig.visible = true;
+mainExitTrig.visible = false;
 mainExitTrig.triggerHandler = mainExitTrigH;
 
-//console.log(camera)
+
+// set the colliders
 const physics = new Physics(scene);
 scene.traverse(node => {
     const model = node.getComponentOfType(Model);

@@ -9,13 +9,9 @@ export class SuperSword {
     }
 
     async load() {
-        // Load the GLTF file
         await this.gltfLoader.load(new URL(this.url, import.meta.url));
-
-        // Load the specific node
         this.node = this.gltfLoader.loadNode(this.nodeName);
 
-        // Set default properties
         this.node.components[0].translation = [-69, 8.7, 167.6];
         this.node.components[0].scale = [0.11, 0.045, 0.05];
         this.node.components[0].rotation = [0, 0, 0, 0];

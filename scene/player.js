@@ -13,9 +13,8 @@ export class Player {
         {
             pitch = 0,
             yaw = 0,
-            moveSpeed = 40, // Constant speed for movement
+            moveSpeed = 40,
             pointerSensitivity = 0.002,
-            lightSpeedFactor = 0.01, // Added to control light speed
             
         } = {}
     ) {
@@ -32,7 +31,6 @@ export class Player {
 
         this.moveSpeed = moveSpeed;
         this.pointerSensitivity = pointerSensitivity;
-        this.lightSpeedFactor = lightSpeedFactor; 
         this.staticRotation = new vec4(0.1, 0.8, 0, 0);
         this.hit = false;
         this.hittimer = 1000;

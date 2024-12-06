@@ -14,7 +14,7 @@ struct VertexOutput {
 struct FragmentInput {
     @location(1) texcoords: vec2f,
     @location(2) normal: vec3f,
-    @location(3) worldPos: vec3f
+    @location(3) worldPos: vec3f,
 }
 
 struct FragmentOutput {
@@ -91,8 +91,8 @@ fn fragment(input: FragmentInput) -> FragmentOutput {
     let cameraPosition = light.position; 
     let fogColor = vec3f(0, 0, 0); 
     let distanceToCamera = distance(cameraPosition, input.worldPos);
-    let fogStart = 5.0;
-    let fogEnd = 150.0; 
+    let fogStart = 1.0;
+    let fogEnd = 120.0; 
     let fogFactor = clamp((distanceToCamera - fogStart) / (fogEnd - fogStart), 0.0, 1.0);
 
     let foggedColor = mix(finalColor, fogColor, fogFactor);

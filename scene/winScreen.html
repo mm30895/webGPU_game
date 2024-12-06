@@ -110,9 +110,9 @@
     </div>
 
     <script>
-        // Generate confetti
+        //generate confetti
         const victoryScreen = document.getElementById('victory-screen');
-        for (let i = 0; i < 30; i++) { // Reduced confetti count to 30
+        for (let i = 0; i < 30; i++) {
             const confetti = document.createElement('div');
             confetti.className = 'confetti';
             confetti.style.setProperty('--rand-x', Math.random());
@@ -123,10 +123,8 @@
             confetti.style.top = `${Math.random() * -100}%`;
             victoryScreen.appendChild(confetti);
         }
-
-        // Button functionality
         document.getElementById('play-again-button').addEventListener('click', () => {
-            window.location.href = "index.html"; // reload or navigate to the starting page
+            window.location.href = "index.html";
         });
     </script>
 </body>

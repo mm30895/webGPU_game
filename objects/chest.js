@@ -7,26 +7,19 @@ export class Chest {
         scene,
         player,
     ) {
-        this.chestClosed = chestClosed; // Model for the closed chest
-        this.chestOpened = chestOpened; // Model for the opened chest
+        this.chestClosed = chestClosed;
+        this.chestOpened = chestOpened;
         this.currentNode = chestClosed;
 
         this.player = player;
 
-        this.isOpened = false; // State to track if the chest has been opened
+        this.isOpened = false;
 
         this.scene = scene;
     }
 
-    // async load() {
-        
-    //     // Set the default state to closed chest
-    //     this.currentNode = this.chestClosed;
-    //     //this.updateNodeTransform();
-    // }
 
     updateNodeTransform() {
-        // Ensure the opened and closed models share the same transform
         const { translation, scale, rotation } = this.triggerNode.components[0];
         this.chestClosed.components[0].translation = [...translation];
         this.chestClosed.components[0].scale = [...scale];
@@ -58,13 +51,8 @@ export class Chest {
         if (!this.isOpened) {
             this.isOpened = true;
 
-            // Remove the closed chest node from the scene
             this.scene.removeChild(this.chestClosed);
-
-            // Add the opened chest node to the scene
             this.scene.addChild(this.chestOpened);
-
-            // Set the current node to the opened chest
             this.currentNode = this.chestOpened;
 
             const effect = new Audio();
@@ -79,7 +67,6 @@ export class Chest {
                 this.player.awsome = true;
                 this.chestOpened.removeChild(this.chestOpened.children[0]);
             }, 1000); // 1 second delay
-            //scene.addChild(this.player.awsomeSword)
 
         }
     }

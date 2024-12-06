@@ -67,12 +67,10 @@ export class Physics {
             return;
         }
 
-        // Handle trigger objects.
+        // handle trigger objects.
         if (b.isTrigger) {
-            //b.onTrigger();
             b.triggerHandler.onTrigger();
-            //console.log("triggerrrr")
-            return true; // Indicate a trigger event occurred.
+            return true;
         }
 
         // Move node A minimally to avoid collision if B is not a trigger.

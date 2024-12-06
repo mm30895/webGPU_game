@@ -218,32 +218,32 @@ export class Renderer extends BaseRenderer {
         this.device.queue.writeBuffer(cameraUniformBuffer, 64, projectionMatrix);
         this.renderPass.setBindGroup(0, cameraBindGroup);
 
-         // luci
-        // const light = scene.find(node=> node.getComponentOfType(Light));
-        // const lightComponent = light.getComponentOfType(Light);
-        // const {lightUniformBuffer, lightBindGroup } = this.prepareLight(lightComponent);
-        // const LightUniformsValues = new ArrayBuffer(48);
-        // const LightUniformsViews = {
-        //     color: new Float32Array(LightUniformsValues, 0, 3),
-        //     direction: new Float32Array(LightUniformsValues, 16, 3), 
-        //     position: new Float32Array(LightUniformsValues, 32, 3), 
-        // }
-        // LightUniformsViews.color.set(lightComponent.color);
-        // LightUniformsViews.direction.set(lightComponent.direction);
-        // LightUniformsViews.position.set(lightComponent.position);
-        // this.device.queue.writeBuffer(lightUniformBuffer,0, LightUniformsValues)
-        // this.renderPass.setBindGroup(3, lightBindGroup);
-        const cameraLight = camera.children[2];
-        this.renderLight(scene);
-        this.renderLight(cameraLight);
-
-        
-        //this.renderNode(scene);
+         // leave it ... will need for shadows
+        /*
+        const light = scene.find(node=> node.getComponentOfType(Light));
+        const lightComponent = light.getComponentOfType(Light);
+        const {lightUniformBuffer, lightBindGroup } = this.prepareLight(lightComponent);
+        const LightUniformsValues = new ArrayBuffer(48);
+        const LightUniformsViews = {
+            color: new Float32Array(LightUniformsValues, 0, 3),
+            direction: new Float32Array(LightUniformsValues, 16, 3), 
+            position: new Float32Array(LightUniformsValues, 32, 3), 
+        }
+        LightUniformsViews.color.set(lightComponent.color);
+        LightUniformsViews.direction.set(lightComponent.direction);
+        LightUniformsViews.position.set(lightComponent.position);
+        this.device.queue.writeBuffer(lightUniformBuffer,0, LightUniformsValues)
+        this.renderPass.setBindGroup(3, lightBindGroup);
+        */
+        //TODO: check the scene lights (add them in main as well)
+        this.renderLight(scene); // i dont think this works properly
+        this.renderLight(camera);
         for (const child of scene.children) {
             if (child.visible) {
                 this.renderNode(child);
             }
         }
+        const cameraLight = camera.children[2]; // dont do light xD
         for (const child of camera.children) {
             if (child.visible && child !== cameraLight) {
                 this.renderNode(child);
@@ -270,14 +270,12 @@ export class Renderer extends BaseRenderer {
             LightUniformsViews.direction.set(lightComponent.direction);
             LightUniformsViews.position.set(lightComponent.position);
     
-            // Write the light uniform data to the buffer
+            // Write the light uniform data to the buffer and bind to renderpass
             this.device.queue.writeBuffer(lightUniformBuffer, 0, LightUniformsValues);
-    
-            // Bind the light uniform to the render pass
             this.renderPass.setBindGroup(3, lightBindGroup);
         }
     
-        // Recursively process children of the current node
+        // process children
         for (const child of node.children) {
             this.renderLight(child);
         }
@@ -285,9 +283,6 @@ export class Renderer extends BaseRenderer {
     
 
     renderNode(node, modelMatrix = mat4.create()) {
-
-    
-
         const localMatrix = getLocalModelMatrix(node);
         modelMatrix = mat4.multiply(mat4.create(), modelMatrix, localMatrix);
         const normalMatrix = mat4.normalFromMat4(mat4.create(), modelMatrix);

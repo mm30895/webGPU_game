@@ -8,7 +8,7 @@ const minotaurTriggerNode = gltfLoader.loadNode('Trigger');
 
 
 const transform = minotaurNode.components[0];
-transform.translation = [0, 0, -20];
+transform.translation = [-99.13, 0, -63.0432 ];
 transform.scale = [1.4, 1.4, 1.4];
 
 minotaurNode.isStatic = true;
@@ -19,7 +19,7 @@ minotaurTriggerNode.isTrigger = true;
 
 
 const transformTrigger = minotaurTriggerNode.components[0];
-transformTrigger.translation = [0, 0, -20];
+transformTrigger.translation = [-99.13, 0, -63.0432];
 transformTrigger.scale = [1.4 * 4.239274501800537, 1.4 * 5.867170810699463, 5 * 2.936772108078003];
 
 

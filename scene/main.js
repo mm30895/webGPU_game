@@ -191,18 +191,18 @@ function update(time, dt) {
     }
     
 }
-
 var pauseScreen = new Pause(canvasFront);
 pauseScreen.init();
 
 function render() {
+    UIRenderer.context.clearRect(0, 0, UIRenderer.canvas.width, UIRenderer.canvas.height); //clear canvas
     renderer.render(scene, camera);
-    if(camera.components[2].paused) {
-        UIRenderer.render(pauseScreen)
-    }else{
-        console.log("holla")
+    
+    if (camera.components[2].paused) {
+        UIRenderer.render(pauseScreen);
     }
 }
+
 
 function resize({ displaySize: { width, height }}) {
     camera.getComponentOfType(Camera).aspect = width / height;

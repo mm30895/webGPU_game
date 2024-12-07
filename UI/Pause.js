@@ -17,9 +17,13 @@ export class Pause {
         const imageLoader = new ImageLoader();
 
         this.image1 = await imageLoader.load(this.imageUrl1)
+
+
     }
 
     render(context) {
-        context.drawImage(this.image1, 0, 0, this.image1.width, this.image1.height);
+
+    // Draw the image with the new dimensions
+        context.drawImage(this.image1, 90, 90, 724, 910);
     }
 }

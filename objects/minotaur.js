@@ -2,12 +2,13 @@ import { Audio } from '../scene/Audio.js';
 const combatMusic = new Audio();
 
 export class Minotaur {
-    constructor(minotaur, scene, player, ambientMusic, wall, isMinion) {
+    constructor(minotaur, scene, player, ambientMusic, wall, entWall, isMinion) {
         this.minotaur = minotaur;
         this.currentNode = minotaur;
         this.player = player;
         this.wall = wall;
         this.isMinion = isMinion;
+        this.entWall = entWall;
 
         this.hp = 100;
         this.isDead = false;

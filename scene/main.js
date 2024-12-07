@@ -37,7 +37,7 @@ const music = new Audio();
 // });
 
 const loader = new GLTFLoader();
-await loader.load('assets/Labirint4gltf.gltf');
+await loader.load('assets/Labirint4.gltf');
 const scene = loader.loadScene('Scene');
 const camera = loader.loadNode('Camera.001');
 if (!camera) {
@@ -96,14 +96,16 @@ wall2.isStatic = true;
 wall2.visible = true;
 wall2.addComponent(Transform);
 wall2.components[0].translation = [50.849 , 22.8936, 27];
+const wall3 = loader.loadNode('wall.044');
+const wall4 = loader.loadNode('wall.045');
 
 //minotaur trigger
-let minotaur = new Minotaur(minotaurNode, scene,  camera.components[2], music, wall, false);
+let minotaur = new Minotaur(minotaurNode, scene,  camera.components[2], music, wall, wall4, false);
 minotaurTriggerNode.triggerHandler = minotaur;
 scene.addChild(minotaur.getNode());
 scene.addChild(minotaurTriggerNode);
 //minion trigger
-let minion = new Minotaur(minionNode, scene,  camera.components[2], music, wall2, true);
+let minion = new Minotaur(minionNode, scene,  camera.components[2], music, wall2, wall3, true);
 minionTriggerNode.triggerHandler = minion;
 scene.addChild(minion.getNode());
 scene.addChild(minionTriggerNode);

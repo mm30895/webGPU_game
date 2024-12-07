@@ -13,6 +13,7 @@ export class enemyExit {
             this.music.playMusic('./audio/the 14th sacrifice.mp3');
             this.played = true;
         }
+        this.enemy.resetHpBar();
         this.enemy.hpBarInvisible();
     }
 }

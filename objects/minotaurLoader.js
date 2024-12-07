@@ -20,7 +20,7 @@ minotaurTriggerNode.isTrigger = true;
 
 const transformTrigger = minotaurTriggerNode.components[0];
 transformTrigger.translation = [-99.13, 0, -63.0432];
-transformTrigger.scale = [1.4 * 4.239274501800537, 1.4 * 5.867170810699463, 5 * 2.936772108078003];
+transformTrigger.scale = [1.4 * 4.239274501800537, 5 * 5.867170810699463, 5 * 2.936772108078003];
 
 
 export { minotaurNode, minotaurTriggerNode};

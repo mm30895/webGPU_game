@@ -71,6 +71,7 @@ export class Player {
                 doc.addEventListener('pointermove', this.pointermoveHandler);
             } else {
                 doc.removeEventListener('pointermove', this.pointermoveHandler);
+                console.log("pressed esc");
             }
         });
     }

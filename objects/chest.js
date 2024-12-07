@@ -1,4 +1,5 @@
 import { Audio } from '../scene/Audio.js';
+import {Transform} from '../engine/core.js'
 
 export class Chest {
     constructor(
@@ -29,7 +30,6 @@ export class Chest {
         this.chestOpened.components[0].scale = [...scale];
         this.chestOpened.components[0].rotation = [...rotation];
     }
-
     setTranslation(x, y, z) {
         this.triggerNode.components[0].translation = [x, y, z];
         this.updateNodeTransform();

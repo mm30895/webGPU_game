@@ -13,6 +13,7 @@ import {
 
 import { Physics } from './Physics.js';
 import { minotaurNode, minotaurTriggerNode} from '../objects/minotaurLoader.js';
+import { minionNode, minionTriggerNode} from '../objects/minionLoader.js';
 import { chestClosed, chestTrigger, chestCollider } from '../objects/chestClosed.js';
 import { chestOpened } from '../objects/cehstOpened.js';
 import { ChestTrigger } from '../objects/chestTrigger.js';
@@ -36,7 +37,7 @@ const music = new Audio();
 // });
 
 const loader = new GLTFLoader();
-await loader.load('assets/Labirint3.gltf');
+await loader.load('assets/Labirint4gltf.gltf');
 const scene = loader.loadScene('Scene');
 const camera = loader.loadNode('Camera.001');
 if (!camera) {
@@ -90,11 +91,22 @@ wall.isStatic = true;
 wall.visible = true;
 wall.addComponent(Transform);
 wall.components[0].translation = [-171.852, 22.8936, -61.0778];
+const wall2 = loader.loadNode('wall.043');
+wall2.isStatic = true;
+wall2.visible = true;
+wall2.addComponent(Transform);
+wall2.components[0].translation = [50.849 , 22.8936, 27];
+
 //minotaur trigger
-let minotaur = new Minotaur(minotaurNode, scene,  camera.components[2], music, wall);
+let minotaur = new Minotaur(minotaurNode, scene,  camera.components[2], music, wall, false);
 minotaurTriggerNode.triggerHandler = minotaur;
 scene.addChild(minotaur.getNode());
 scene.addChild(minotaurTriggerNode);
+//minion trigger
+let minion = new Minotaur(minionNode, scene,  camera.components[2], music, wall2, true);
+minionTriggerNode.triggerHandler = minion;
+scene.addChild(minion.getNode());
+scene.addChild(minionTriggerNode);
 
 
 // chest trigger 
@@ -121,13 +133,13 @@ mainTrig.visible = false;
 mainTrig.triggerHandler = mainEntryTrig;
 const combatMusic = new Audio();
 var enemyEntTrig = loader.loadNode('Trigger.002');
-var enemyEntTrigH = new enemyEntry(music, minotaur, combatMusic);
+var enemyEntTrigH = new enemyEntry(music, minion, combatMusic);
 enemyEntTrig.isTrigger = true;
 enemyEntTrig.visible = false;
 enemyEntTrig.triggerHandler = enemyEntTrigH;
 const music2 = new Audio();
 var enemyExtTrig = loader.loadNode('Trigger.003');
-var enemyExtTrigH = new enemyExit(music2, minotaur, combatMusic);
+var enemyExtTrigH = new enemyExit(music2, minion, combatMusic);
 enemyExtTrig.isTrigger = true;
 enemyExtTrig.visible = false;
 enemyExtTrig.triggerHandler = enemyExtTrigH;
@@ -167,6 +179,7 @@ function update(time, dt) {
     });
 
     minotaur.update(time, dt);
+    minion.update(time, dt);
     physics.update(time, dt);
 }
 

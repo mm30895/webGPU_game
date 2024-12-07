@@ -2,11 +2,12 @@ import { Audio } from '../scene/Audio.js';
 const combatMusic = new Audio();
 
 export class Minotaur {
-    constructor(minotaur, scene, player, ambientMusic, wall) {
+    constructor(minotaur, scene, player, ambientMusic, wall, isMinion) {
         this.minotaur = minotaur;
         this.currentNode = minotaur;
         this.player = player;
         this.wall = wall;
+        this.isMinion = isMinion;
 
         this.hp = 100;
         this.isDead = false;
@@ -42,12 +43,17 @@ export class Minotaur {
     onTrigger() {
         //this.ambientMusic.stop();
         //combatMusic.playMusic('./audio/Combat Music.mp3');
+        console.log("we hereew")
         if(!this.isDead) {
             if (this.player.hit) {
                 this.hitTimer -= 1;
                 if (this.hitTimer <= 0) {
                     this.hitTimer = this.hitTimerMax; 
-                    this.takeDamage(this.player.awsome ? 15 : 5);
+                    if(this.isMinion){
+                        this.takeDamage(this.player.awsome ? 30 : 15);
+                    }else{
+                        this.takeDamage(this.player.awsome ? 15 : 5);
+                    }
                 }
             }
     
@@ -62,8 +68,6 @@ export class Minotaur {
                 this.player.shake(0.07, 0.1, 0, true);
             }
         }
-
-        //this.hpBarVisible();
     }
 
     takeDamage(amount) {
@@ -92,26 +96,38 @@ export class Minotaur {
             hpBar.style.width = `${hpPercentage}%`;
         }
     }
+    resetHpBar(){
+        const hpBar = document.getElementById("hp-bar-minotaur");
+        if (hpBar) {
+            const hpPercentage = 100; 
+            hpBar.style.width = `${hpPercentage}%`;
+        }
+    }
 
     getRotation() {
         return [...this.currentNode.components[0].rotation];
     }
     
     update(t, dt) {
-        this.updateHPBar();
         
         // if (this.isDead) {
-        //     window.location.href = "winScreen.html";
-        //     return; 
-        // }
-        
-        if(!this.isDead){
+            //     window.location.href = "winScreen.html";
+            //     return; 
+            // }
+            
+            if(!this.isDead){
+            this.updateHPBar();
             if (this.minotaurHit) {
                 if (this.minotaurHitTimer === 0) {
                     this.originalRotation = this.getRotation();
                 }
+                if(this.isMinion) {
+                    this.setRotation(0, -0.931506, 0, -0.363725);
+                }else{
+                    this.setRotation(0.059492, -0.356913, 0.02273, 0.932242);
+                }
      
-                this.setRotation(0.059492, -0.356913, 0.02273, 0.932242);
+               
                 //console.log("Hit animation");
         
                 this.minotaurHitTimer = 1; 
@@ -122,7 +138,11 @@ export class Minotaur {
         if (this.minotaurHitTimer > 0) {
             this.minotaurHitTimer -= dt;
             if (this.minotaurHitTimer <= 0) {
-                this.setRotation(0,0,0,0);
+                if(this.isMinion) {
+                    this.setRotation(0,-1,0,0);
+                }else{
+                    this.setRotation(0,0,0,0);
+                }
                 //console.log("Returning to original rotation");
             }
             //console.log("holla", this.minotaurHitTimer)

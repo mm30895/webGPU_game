@@ -1,5 +1,4 @@
 import { Audio } from '../scene/Audio.js';
-const combatMusic = new Audio();
 
 export class Minotaur {
     constructor(minotaur, scene, player, ambientMusic, wall, isMinion) {
@@ -14,6 +13,16 @@ export class Minotaur {
 
         this.scene = scene;
         this.ambientMusic = ambientMusic;
+
+        this.randomMovementTimer = 0;
+        this.targetPosition = null;
+        this.speed = 2;
+        this.boundaries = {
+            xMin: -0.00001,
+            xMax: 0.00001,
+            zMin: -0.00001,
+            zMax: 0.00001,
+        };
 
         this.hitTimer = 100;
         this.hitTimerMax = 100;
@@ -40,9 +49,56 @@ export class Minotaur {
         return this.minotaur;
     }
 
+    pickTarget() {
+        const { xMin, xMax, zMin, zMax } = this.boundaries;
+        return [
+            Math.random() * (xMax - xMin) + xMin,
+            0,
+            Math.random() * (zMax - zMin) + zMin,
+        ];
+    }
+
+    moveToTarget(dt) {
+        if (!this.targetPosition) return;
+
+        const currPosition = this.currentNode.components[0].translation;
+        const direction = [
+            this.targetPosition[0] - currPosition[0],
+            0,
+            this.targetPosition[2] - currPosition[2],
+        ];
+
+        const distance = Math.sqrt(
+            direction[0] ** 2 +
+            direction[1] ** 2 +
+            direction[2] ** 2
+        );
+
+        if (distance < 0.1) {
+            this.targetPosition = null;
+            return;
+        }
+
+        const normDirection = [
+            direction[0] / distance,
+            0,
+            direction[2] / distance,
+        ];
+
+        const movement = [
+            normDirection[0] * this.speed * dt,
+            0,
+            normDirection[2] * this.speed * dt,
+        ];
+
+        this.setTranslation(
+            currPosition[0] + movement[0],
+            currPosition[1] + movement[1],
+            currPosition[2] + movement[2]
+        );
+    }
+
     onTrigger() {
-        //this.ambientMusic.stop();
-        //combatMusic.playMusic('./audio/Combat Music.mp3');
         console.log("we hereew")
         if(!this.isDead) {
             if (this.player.hit) {
@@ -107,15 +163,19 @@ export class Minotaur {
     getRotation() {
         return [...this.currentNode.components[0].rotation];
     }
-    
+
+
     update(t, dt) {
-        
-        // if (this.isDead) {
-            //     window.location.href = "winScreen.html";
-            //     return; 
-            // }
-            
-            if(!this.isDead){
+        // if (!this.targetPosition || this.randomMovementTimer <= 0) {
+        //     this.targetPosition = this.pickTarget();
+        //     this.randomMovementTimer = Math.random() * 2 + 3;
+        // } else {
+        //     this.randomMovementTimer -= dt;
+        // }
+
+        // this.moveToTarget(dt);
+                
+        if(!this.isDead) {
             this.updateHPBar();
             if (this.minotaurHit) {
                 if (this.minotaurHitTimer === 0) {
@@ -135,6 +195,7 @@ export class Minotaur {
             }
         
         }
+
         if (this.minotaurHitTimer > 0) {
             this.minotaurHitTimer -= dt;
             if (this.minotaurHitTimer <= 0) {

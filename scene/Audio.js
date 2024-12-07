@@ -32,12 +32,16 @@ export class Audio {
 	}
 
 	stop() {
+		if (!this.isPlaying) {
+			return;
+		}
 		this.gainNode.gain.setValueAtTime(this.gainNode.gain.value, this.audioContext.currentTime);
         this.gainNode.gain.linearRampToValueAtTime(0, this.audioContext.currentTime + 2);
 
 		setTimeout(() => {
             this.music.stop();
             this.music.disconnect();
+			this.isPlaying = false;
         }, 2000);
 	}
 

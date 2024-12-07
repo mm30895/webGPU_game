@@ -32,9 +32,6 @@ await renderer.initialize();
 
 //ambient music
 const music = new Audio();
-// document.addEventListener('click', () => {
-//     music.playMusic('./audio/the 14th sacrifice.mp3');
-// });
 
 const loader = new GLTFLoader();
 await loader.load('assets/Labirint4gltf.gltf');

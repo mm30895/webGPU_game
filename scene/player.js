@@ -46,6 +46,7 @@ export class Player {
         this.effect = new Audio();
 
         this.awsome = false;
+        this.paused = false;
 
         this.initHandlers();
         this.initChildTransforms();
@@ -69,9 +70,12 @@ export class Player {
         doc.addEventListener('pointerlockchange', () => {
             if (doc.pointerLockElement === element) {
                 doc.addEventListener('pointermove', this.pointermoveHandler);
+                this.paused = false;
             } else {
                 doc.removeEventListener('pointermove', this.pointermoveHandler);
                 console.log("pressed esc");
+                this.paused = true;
+                //window.location.href = "pauseScreen.html"
             }
         });
     }

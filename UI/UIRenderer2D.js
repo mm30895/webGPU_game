@@ -14,9 +14,9 @@ export class UIRenderer2D{
 
     render(layout) {
         this.context.clearRect(0,0,this.canvas.width, this.canvas.height)
-        for(const element of layout){
-            element?.render(this.context)
-        }
+        
+        layout.render(this.context)
+        
     }
 
 

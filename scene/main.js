@@ -25,10 +25,15 @@ import { Chest } from '../objects/chest.js';
 import { Minotaur } from '../objects/minotaur.js';
 import { Audio } from './Audio.js';
 import { mainEntry, enemyEntry, enemyExit, mainExit } from './triggerDoors/triggerDoors.js';
+import { UIRenderer2D } from '../UI/UIRenderer2D.js';
+import { Pause } from '../UI/Pause.js';
 
 const canvas = document.getElementById("canvas")
+const canvasFront = document.getElementById("canvasFront");
 const renderer = new Renderer(canvas);
 await renderer.initialize();
+const UIRenderer = new UIRenderer2D(canvasFront);
+await UIRenderer.init();
 
 //ambient music
 const music = new Audio();
@@ -71,6 +76,7 @@ camera.aabb = {
     min: [-1, -1, -1],
     max: [5, 10, 5],
 };
+console.log(camera.components[2].paused)
 
 //load scene
 loader.loadNode('tla').visible = true;
@@ -169,21 +175,33 @@ scene.traverse(node => {
 });
 
 function update(time, dt) {
-    
-    scene.traverse(node => {
-        for (const component of node.components) {
-            component.update?.(time, dt);
-        }
-        node.update?.(time, dt);
-    });
 
-    minotaur.update(time, dt);
-    minion.update(time, dt);
-    physics.update(time, dt);
+    if(!camera.components[2].paused) {
+
+        scene.traverse(node => {
+            for (const component of node.components) {
+                component.update?.(time, dt);
+            }
+            node.update?.(time, dt);
+        });
+    
+        minotaur.update(time, dt);
+        minion.update(time, dt);
+        physics.update(time, dt);
+    }
+    
 }
+
+var pauseScreen = new Pause(canvasFront);
+pauseScreen.init();
 
 function render() {
     renderer.render(scene, camera);
+    if(camera.components[2].paused) {
+        UIRenderer.render(pauseScreen)
+    }else{
+        console.log("holla")
+    }
 }
 
 function resize({ displaySize: { width, height }}) {

@@ -19,6 +19,7 @@ import { chestOpened } from '../objects/cehstOpened.js';
 import { ChestTrigger } from '../objects/chestTrigger.js';
 import { BoringSword } from '../objects/boringSword.js';
 import { SuperSword } from '../objects/superSword.js';
+import { torch } from '../objects/torch.js';
 import { Light } from './Light.js';
 import { Player } from './player.js';
 import { Chest } from '../objects/chest.js';
@@ -77,8 +78,12 @@ light.addComponent(new Camera({
 
 camera.addChild(light);
 
+
+camera.addChild(torch);
+console.log("torch",camera)
+
 // player
-camera.addComponent(new Player(camera, canvas, boringSword.getNode(), superSword.getNode(), light));
+camera.addComponent(new Player(camera, canvas,torch, boringSword.getNode(), superSword.getNode(), light));
 camera.isDynamic = true;
 camera.aabb = {
     min: [-1, -1, -1],
@@ -210,20 +215,18 @@ function update(time, dt) {
     }
     
 }
-
 var pauseScreen = new Pause(canvasFront);
 pauseScreen.init();
 
 function render() {
+    UIRenderer.context.clearRect(0, 0, UIRenderer.canvas.width, UIRenderer.canvas.height); //clear canvas
     renderer.render(scene, camera);
-    //renderer.render(scene, light);
     
-    if(camera.components[2].paused) {
-        UIRenderer.render(pauseScreen)
-    }else{
-        //console.log("holla")
+    if (camera.components[2].paused) {
+        UIRenderer.render(pauseScreen);
     }
 }
+
 
 function resize({ displaySize: { width, height }}) {
     camera.getComponentOfType(Camera).aspect = width / height;

@@ -10,8 +10,6 @@ chestClosed.visible = true;
 const chestTrigger = gltfLoader.loadNode('ChestTrigger');
 const chestCollider= gltfLoader.loadNode('chestCollider');
 
-console.log(chestClosed)
-
 let x = 128.837;
 let z = -2;
 let y = 64.7558;

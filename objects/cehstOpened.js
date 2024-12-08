@@ -20,4 +20,6 @@ children.forEach(child => {
     transform.scale = [2, 2, 2]
     transform.rotation = [0, -1, 0, 0]
 });
+//console.log(chestOpened);
+chestOpened.children[0].components[0].translation = [x, z + 3, y];
 export { chestOpened };

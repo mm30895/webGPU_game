@@ -225,8 +225,10 @@ function render() {
     if (camera.components[2].paused) {
         UIRenderer.render(pauseScreen);
     }
+    /*if(minotaur.isDead)(
+        UIRenderer.render()
+    )*/
 }
-
 
 function resize({ displaySize: { width, height }}) {
     camera.getComponentOfType(Camera).aspect = width / height;

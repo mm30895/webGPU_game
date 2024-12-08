@@ -155,7 +155,7 @@ export class Player {
 
     update(t, dt) {
         //if dead
-        if (this.hp < 0) {
+        if (this.hp <= 0) {
             // Navigate to death screen
             window.location.href = "deathScreen.html";
             return; // Stop further updates

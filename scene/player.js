@@ -2,6 +2,7 @@ import { quat, vec3, vec4 } from 'glm';
 import { Transform } from 'engine/core/Transform.js';
 import { Light } from './Light.js';
 import { Audio } from '../scene/Audio.js';
+import { Camera } from '../engine/core.js';
 
 export class Player {
     constructor(

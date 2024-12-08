@@ -13,7 +13,7 @@ const transform = minionNode.components[0];
 transform.translation = [x, z-2, y];
 transform.scale = [1, 1, 1];
 transform.rotation = [0, -1, 0, 0]
-console.log(minionNode);
+//console.log(minionNode);
 var axe = minionNode.children[5];
 axe.removeChild(axe.children[0]);
 
@@ -28,6 +28,11 @@ const transformTrigger = minionTriggerNode.components[0];
 transformTrigger.translation = [x, z, y];
 transformTrigger.scale = [1.4 * 4.239274501800537, 5 * 5.867170810699463, 5 * 2.936772108078003];
 transformTrigger.rotation = [0, -1, 0, 0]
+
+var children = minionNode.children;
+children.forEach(child => {
+    child.visible = true;
+});
 
 
 export { minionNode, minionTriggerNode};

@@ -15,6 +15,11 @@ export class SuperSword {
         this.node.components[0].translation = [-69, 8.7, 167.6];
         this.node.components[0].scale = [0.11, 0.045, 0.05];
         this.node.components[0].rotation = [0, 0, 0, 0];
+        
+        var children = this.node.children;
+        children.forEach(child => {
+            child.visible = true;
+        });
     }
 
     setTranslation(x, y, z) {

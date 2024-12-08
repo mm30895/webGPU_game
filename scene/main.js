@@ -19,6 +19,7 @@ import { chestOpened } from '../objects/cehstOpened.js';
 import { ChestTrigger } from '../objects/chestTrigger.js';
 import { BoringSword } from '../objects/boringSword.js';
 import { SuperSword } from '../objects/superSword.js';
+import { torch } from '../objects/torch.js';
 import { Light } from './Light.js';
 import { Player } from './player.js';
 import { Chest } from '../objects/chest.js';
@@ -27,6 +28,7 @@ import { Audio } from './Audio.js';
 import { mainEntry, enemyEntry, enemyExit, mainExit } from './triggerDoors/triggerDoors.js';
 import { UIRenderer2D } from '../UI/UIRenderer2D.js';
 import { Pause } from '../UI/Pause.js';
+import { quat } from 'glm'
 
 const canvas = document.getElementById("canvas")
 const canvasFront = document.getElementById("canvasFront");
@@ -61,22 +63,32 @@ camera.addChild(superSword.getNode())
 // light
 const light = new Node();
 light.addComponent(new Light());
-// light.addComponent(new Camera({
-//     near: 5,
-//     far: 20,
-//     fovy: 0.3,
+light.addComponent(new Camera({
+    near: 0.1,
+    far: 300,
+    fovy: 1,
+}));
+// light.addComponent(new Transform({
+//     translation: [12.2,
+//         7.299824600219727,
+//         -2],
+//     rotation: quat.create(),
+
 // }));
-light.addComponent(new Transform());
+
 camera.addChild(light);
 
+
+camera.addChild(torch);
+console.log("torch",camera)
+
 // player
-camera.addComponent(new Player(camera, canvas, boringSword.getNode(), superSword.getNode(), light));
+camera.addComponent(new Player(camera, canvas,torch, boringSword.getNode(), superSword.getNode(), light));
 camera.isDynamic = true;
 camera.aabb = {
     min: [-1, -1, -1],
     max: [5, 10, 5],
 };
-console.log(camera.components[2].paused)
 
 //load scene
 loader.loadNode('tla').visible = true;
@@ -90,8 +102,8 @@ for(var i = 1; i <= 41; i++) {
 
 //close the end wall
 const wall = loader.loadNode('wall.042');
-wall.isStatic = true;
-wall.visible = true;
+wall.isStatic = false;
+wall.visible = false;
 wall.addComponent(Transform);
 wall.components[0].translation = [-171.852, 22.8936, -61.0778];
 const wall2 = loader.loadNode('wall.043');
@@ -103,12 +115,24 @@ const wall3 = loader.loadNode('wall.044');
 const wall4 = loader.loadNode('wall.045');
 
 //minotaur trigger
-let minotaur = new Minotaur(minotaurNode, scene,  camera.components[2], music, wall, wall4, false);
+var boudriesMinotaur = {// ai movement boundries
+    xMin: -139.686,
+    xMax: -64.7974,
+    zMin: -100.475,
+    zMax: 21.4433,
+};
+let minotaur = new Minotaur(minotaurNode, minotaurTriggerNode, scene,  camera.components[2], music, wall, wall4, false, boudriesMinotaur);
 minotaurTriggerNode.triggerHandler = minotaur;
 scene.addChild(minotaur.getNode());
 scene.addChild(minotaurTriggerNode);
 //minion trigger
-let minion = new Minotaur(minionNode, scene,  camera.components[2], music, wall2, wall3, true);
+var boudriesMinion = { // ai movement boundries
+    xMin: 51.0223,
+    xMax: 150.349,
+    zMin:  9.2065,
+    zMax: 72.9337,
+};
+let minion = new Minotaur(minionNode, minionTriggerNode, scene,  camera.components[2], music, wall2, wall3, true, boudriesMinion);
 minionTriggerNode.triggerHandler = minion;
 scene.addChild(minion.getNode());
 scene.addChild(minionTriggerNode);

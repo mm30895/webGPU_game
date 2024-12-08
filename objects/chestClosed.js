@@ -10,13 +10,12 @@ chestClosed.visible = true;
 const chestTrigger = gltfLoader.loadNode('ChestTrigger');
 const chestCollider= gltfLoader.loadNode('chestCollider');
 
-console.log(chestClosed)
-
 let x = 128.837;
 let z = -2;
 let y = 64.7558;
 var children = chestClosed.children;
 children.forEach(child => {
+    child.visible = true;
     const transform = child.components[0];
     transform.translation = [x, z, y];
     transform.scale = [2, 2, 2]

@@ -24,6 +24,6 @@ export class Pause {
     render(context) {
 
     // Draw the image with the new dimensions
-        context.drawImage(this.image1, 90, 90, 724, 910);
+        context.drawImage(this.image1, 90, 90, window.innerWidth -180, window.innerHeight -180);
     }
 }

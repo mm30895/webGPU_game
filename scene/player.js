@@ -2,11 +2,13 @@ import { quat, vec3, vec4 } from 'glm';
 import { Transform } from 'engine/core/Transform.js';
 import { Light } from './Light.js';
 import { Audio } from '../scene/Audio.js';
+import { Camera } from '../engine/core.js';
 
 export class Player {
     constructor(
         node,
         domElement,
+        torch,
         sword,
         awsomeSword,
         light,
@@ -20,6 +22,7 @@ export class Player {
     ) {
         this.node = node;
         this.domElement = domElement;
+        this.torch = torch;
         this.sword = sword;
         this.awsomeSword = awsomeSword;
         this.light = light;
@@ -130,6 +133,18 @@ export class Player {
             childTransform.rotation = rotation;
         }
     }
+    updateChildTransformNoHit(child, cameraPos, rotation) {
+        const childTransform = child.getComponentOfType(Transform);
+        if (!childTransform) return;
+
+        const rotatedPos = vec3.create();
+        vec3.transformQuat(rotatedPos, childTransform.initialRelativePos, rotation);
+        vec3.add(childTransform.translation, cameraPos, rotatedPos);
+
+        const staticRotation = quat.create();
+        childTransform.rotation = rotation;
+        
+    }
     updateHPBar() {
         const hpBar = document.getElementById('hp-bar');
         if (hpBar) {
@@ -231,6 +246,7 @@ export class Player {
             transform.rotation = rotation;
 
             const cameraPos = transform.translation;
+            this.updateChildTransformNoHit(this.torch, cameraPos, rotation);
             this.updateChildTransform(this.sword, cameraPos, rotation);
             this.updateChildTransform(this.awsomeSword, cameraPos, rotation);
 

@@ -102,8 +102,8 @@ for(var i = 1; i <= 41; i++) {
 
 //close the end wall
 const wall = loader.loadNode('wall.042');
-wall.isStatic = false;
-wall.visible = false;
+wall.isStatic = true;
+wall.visible = true;
 wall.addComponent(Transform);
 wall.components[0].translation = [-171.852, 22.8936, -61.0778];
 const wall2 = loader.loadNode('wall.043');
